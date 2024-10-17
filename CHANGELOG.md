@@ -1,10 +1,14 @@
+## 1.0.0
+
+* Forked from flutter_adaptive_scaffold
+
 ## 0.3.1
 
 * Use improved MediaQuery methods.
 
 ## 0.3.0
 
-* Adds `inDuration`, `outDuration`, `inCurve`, and `outCurve` parameters for 
+* Adds `inDuration`, `outDuration`, `inCurve`, and `outCurve` parameters for
 configuring additional `SlotLayoutConfig` animation behavior.
 * **BREAKING CHANGES**:
   * Removes `duration` parameter from `SlotLayoutConfig`.
@@ -55,7 +59,7 @@ configuring additional `SlotLayoutConfig` animation behavior.
 
 ## 0.1.11+1
 
-* Allows custom animation duration for the NavigationRail and 
+* Allows custom animation duration for the NavigationRail and
   BottomNavigationBar transitions. [flutter/flutter#112938](https://github.com/flutter/flutter/issues/112938)
 
 ## 0.1.11

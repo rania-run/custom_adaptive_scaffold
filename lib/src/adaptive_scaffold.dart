@@ -122,6 +122,7 @@ class AdaptiveScaffold extends StatefulWidget {
     this.appBarBreakpoint,
     this.navigationRailDestinationBuilder,
     this.groupAlignment,
+    this.padding,
   }) : assert(
           destinations.length >= 2,
           "At least two destinations are required",
@@ -313,6 +314,9 @@ class AdaptiveScaffold extends StatefulWidget {
   /// Used to map NavigationDestination to NavigationRailDestination.
   final NavigationRailDestinationBuilder? navigationRailDestinationBuilder;
 
+  /// Applies a [Padding] around the [NavigationRail].
+  final EdgeInsetsGeometry? padding;
+
   /// Callback function for when the index of a [NavigationRail] changes.
   static WidgetBuilder emptyBuilder = (_) => const SizedBox();
 
@@ -343,7 +347,6 @@ class AdaptiveScaffold extends StatefulWidget {
     int? selectedIndex,
     bool extended = false,
     Color? backgroundColor,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(8.0),
     Widget? leading,
     Widget? trailing,
     void Function(int)? onDestinationSelected,
@@ -353,6 +356,7 @@ class AdaptiveScaffold extends StatefulWidget {
     TextStyle? selectedLabelTextStyle,
     TextStyle? unSelectedLabelTextStyle,
     NavigationRailLabelType? labelType = NavigationRailLabelType.none,
+    EdgeInsetsGeometry? padding,
   }) {
     if (extended && width == 72) {
       width = 192;
@@ -360,7 +364,7 @@ class AdaptiveScaffold extends StatefulWidget {
     return Builder(
       builder: (BuildContext context) {
         return Padding(
-          padding: padding,
+          padding: padding ?? const EdgeInsets.all(8.0),
           child: SizedBox(
             width: width,
             height: MediaQuery.sizeOf(context).height,
@@ -627,6 +631,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 labelType: navRailTheme.labelType,
                 groupAlignment: widget.groupAlignment,
+                padding: widget.padding,
               ),
             ),
             widget.mediumLargeBreakpoint: SlotLayout.from(
@@ -646,6 +651,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 labelType: navRailTheme.labelType,
                 groupAlignment: widget.groupAlignment,
+                padding: widget.padding,
               ),
             ),
             widget.largeBreakpoint: SlotLayout.from(
@@ -668,6 +674,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 unselectedIconTheme: navRailTheme.unselectedIconTheme,
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
+                padding: widget.padding,
               ),
             ),
             widget.extraLargeBreakpoint: SlotLayout.from(
@@ -690,6 +697,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 unselectedIconTheme: navRailTheme.unselectedIconTheme,
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
+                padding: widget.padding,
               ),
             ),
           },

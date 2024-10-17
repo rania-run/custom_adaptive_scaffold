@@ -1,4 +1,4 @@
-# Adaptive Scaffold
+# (Custom) Adaptive Scaffold
 
 `AdaptiveScaffold` reacts to input from users, devices and screen elements and
 renders your Flutter application according to the
@@ -32,6 +32,7 @@ animation should use `AdaptiveLayout`.
 ### Example Usage
 
 <?code-excerpt "example/lib/adaptive_scaffold_demo.dart (Example)"?>
+
 ```dart
 @override
 Widget build(BuildContext context) {
@@ -133,6 +134,7 @@ A `Breakpoint` controls the responsive behavior at different screens and configu
 You can either use a predefined Material3 breakpoint or create your own.
 
 <?code-excerpt "lib/src/breakpoints.dart (Breakpoints)"?>
+
 ```dart
 /// Returns a const [Breakpoint] with the given constraints.
 const Breakpoint({
@@ -227,6 +229,7 @@ const Breakpoint.extraLarge({this.andUp = false, this.platform})
 It is possible to compare Breakpoints:
 
 <?code-excerpt "lib/src/breakpoints.dart (Breakpoint operators)"?>
+
 ```dart
 /// Returns true if this [Breakpoint] is greater than the given [Breakpoint].
 bool operator >(Breakpoint breakpoint)
@@ -270,6 +273,7 @@ displayed and the entrance animation and exit animation.
 ### Example Usage
 
 <?code-excerpt "example/lib/adaptive_layout_demo.dart (Example)"?>
+
 ```dart
 // AdaptiveLayout has a number of slots that take SlotLayouts and these
 // SlotLayouts' configs take maps of Breakpoints to SlotLayoutConfigs.
