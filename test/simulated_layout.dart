@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
-import 'package:flutter_test/flutter_test.dart';
+import "package:custom_adaptive_scaffold/custom_adaptive_scaffold.dart";
+import "package:flutter/material.dart";
+import "package:flutter_test/flutter_test.dart";
 
-import 'test_breakpoints.dart';
+import "test_breakpoints.dart";
 
 AnimatedWidget leftOutIn(Widget child, Animation<double> animation) {
   return SlideTransition(
-    key: Key('in-${child.key}'),
+    key: Key("in-${child.key}"),
     position: Tween<Offset>(
       begin: const Offset(-1, 0),
       end: Offset.zero,
@@ -21,7 +21,7 @@ AnimatedWidget leftOutIn(Widget child, Animation<double> animation) {
 
 AnimatedWidget leftInOut(Widget child, Animation<double> animation) {
   return SlideTransition(
-    key: Key('out-${child.key}'),
+    key: Key("out-${child.key}"),
     position: Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(-1, 0),
@@ -45,19 +45,19 @@ class TestScaffold extends StatefulWidget {
   static const List<NavigationDestination> destinations =
       <NavigationDestination>[
     NavigationDestination(
-      key: Key('Inbox'),
+      key: Key("Inbox"),
       icon: Icon(Icons.inbox),
-      label: 'Inbox',
+      label: "Inbox",
     ),
     NavigationDestination(
-      key: Key('Articles'),
+      key: Key("Articles"),
       icon: Icon(Icons.article),
-      label: 'Articles',
+      label: "Articles",
     ),
     NavigationDestination(
-      key: Key('Chat'),
+      key: Key("Chat"),
       icon: Icon(Icons.chat),
-      label: 'Chat',
+      label: "Chat",
     ),
   ];
 
@@ -96,41 +96,62 @@ class TestScaffoldState extends State<TestScaffold> {
       mediumLargeSecondaryBody: (_) => Container(color: Colors.blue),
       largeSecondaryBody: (_) => Container(color: Colors.yellow),
       extraLargeSecondaryBody: (_) => Container(color: Colors.purple),
-      leadingExtendedNavRail: const Text('leading_extended'),
-      leadingUnextendedNavRail: const Text('leading_unextended'),
-      trailingNavRail: const Text('trailing'),
+      leadingExtendedNavRail: const Text("leading_extended"),
+      leadingUnextendedNavRail: const Text("leading_unextended"),
+      trailingNavRail: const Text("trailing"),
     );
   }
 }
 
 enum SimulatedLayout {
-  small(width: 400, navSlotKey: 'bottomNavigation'),
-  medium(width: 800, navSlotKey: 'primaryNavigation'),
-  mediumLarge(width: 1000, navSlotKey: 'primaryNavigation1'),
-  large(width: 1200, navSlotKey: 'primaryNavigation2'),
-  extraLarge(width: 1600, navSlotKey: 'primaryNavigation3'),
-  smallLandscape(width: 500, height: 400, navSlotKey: 'bottomNavigation'),
-  mediumLandscape(width: 800, height: 600, navSlotKey: 'primaryNavigation'),
+  small(width: 400, navSlotKey: "bottomNavigation"),
+  medium(width: 800, navSlotKey: "primaryNavigation"),
+  mediumLarge(width: 1000, navSlotKey: "primaryNavigation1"),
+  large(width: 1200, navSlotKey: "primaryNavigation2"),
+  extraLarge(width: 1600, navSlotKey: "primaryNavigation3"),
+  smallLandscape(width: 500, height: 400, navSlotKey: "bottomNavigation"),
+  mediumLandscape(width: 800, height: 600, navSlotKey: "primaryNavigation"),
   mediumLargeLandscape(
-      width: 1100, height: 900, navSlotKey: 'primaryNavigation1'),
-  largeLandscape(width: 1400, height: 1000, navSlotKey: 'primaryNavigation2'),
+    width: 1100,
+    height: 900,
+    navSlotKey: "primaryNavigation1",
+  ),
+  largeLandscape(width: 1400, height: 1000, navSlotKey: "primaryNavigation2"),
   extraLargeLandscape(
-      width: 1700, height: 1000, navSlotKey: 'primaryNavigation3'),
+    width: 1700,
+    height: 1000,
+    navSlotKey: "primaryNavigation3",
+  ),
   smallPortraitMediumLandscape(
-      width: 360, height: 650, navSlotKey: 'bottomNavigation'),
+    width: 360,
+    height: 650,
+    navSlotKey: "bottomNavigation",
+  ),
   smallLandscapeMediumPortrait(
-      width: 650, height: 360, navSlotKey: 'bottomNavigation'),
+    width: 650,
+    height: 360,
+    navSlotKey: "bottomNavigation",
+  ),
   smallPortraitMediumLargeLandscape(
-      width: 360, height: 900, navSlotKey: 'bottomNavigation'),
+    width: 360,
+    height: 900,
+    navSlotKey: "bottomNavigation",
+  ),
   smallLandscapeMediumLargePortrait(
-      width: 900, height: 360, navSlotKey: 'primaryNavigation'),
+    width: 900,
+    height: 360,
+    navSlotKey: "primaryNavigation",
+  ),
   mediumLargeLandscapeMediumPortrait(
-      width: 841, height: 668, navSlotKey: 'primaryNavigation');
+    width: 841,
+    height: 668,
+    navSlotKey: "primaryNavigation",
+  );
 
   const SimulatedLayout({
     required double width,
-    double height = 2000,
     required this.navSlotKey,
+    double height = 2000,
   })  : _width = width,
         _height = height;
 
@@ -196,63 +217,63 @@ enum SimulatedLayout {
           child: SlotLayout(
             config: <Breakpoint, SlotLayoutConfig>{
               Breakpoints.small: SlotLayout.from(
-                key: const Key('Breakpoints.small'),
+                key: const Key("Breakpoints.small"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.smallMobile: SlotLayout.from(
-                key: const Key('Breakpoints.smallMobile'),
+                key: const Key("Breakpoints.smallMobile"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.smallDesktop: SlotLayout.from(
-                key: const Key('Breakpoints.smallDesktop'),
+                key: const Key("Breakpoints.smallDesktop"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.medium: SlotLayout.from(
-                key: const Key('Breakpoints.medium'),
+                key: const Key("Breakpoints.medium"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.mediumMobile: SlotLayout.from(
-                key: const Key('Breakpoints.mediumMobile'),
+                key: const Key("Breakpoints.mediumMobile"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.mediumDesktop: SlotLayout.from(
-                key: const Key('Breakpoints.mediumDesktop'),
+                key: const Key("Breakpoints.mediumDesktop"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.mediumLarge: SlotLayout.from(
-                key: const Key('Breakpoints.mediumLarge'),
+                key: const Key("Breakpoints.mediumLarge"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.mediumLargeMobile: SlotLayout.from(
-                key: const Key('Breakpoints.mediumLargeMobile'),
+                key: const Key("Breakpoints.mediumLargeMobile"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.mediumLargeDesktop: SlotLayout.from(
-                key: const Key('Breakpoints.mediumLargeDesktop'),
+                key: const Key("Breakpoints.mediumLargeDesktop"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.large: SlotLayout.from(
-                key: const Key('Breakpoints.large'),
+                key: const Key("Breakpoints.large"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.largeMobile: SlotLayout.from(
-                key: const Key('Breakpoints.largeMobile'),
+                key: const Key("Breakpoints.largeMobile"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.largeDesktop: SlotLayout.from(
-                key: const Key('Breakpoints.largeDesktop'),
+                key: const Key("Breakpoints.largeDesktop"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.extraLarge: SlotLayout.from(
-                key: const Key('Breakpoints.extraLarge'),
+                key: const Key("Breakpoints.extraLarge"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.extraLargeMobile: SlotLayout.from(
-                key: const Key('Breakpoints.extraLargeMobile'),
+                key: const Key("Breakpoints.extraLargeMobile"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.extraLargeDesktop: SlotLayout.from(
-                key: const Key('Breakpoints.extraLargeDesktop'),
+                key: const Key("Breakpoints.extraLargeDesktop"),
                 builder: (BuildContext context) => Container(),
               ),
             },
@@ -273,11 +294,11 @@ enum SimulatedLayout {
           child: SlotLayout(
             config: <Breakpoint, SlotLayoutConfig>{
               Breakpoints.small: SlotLayout.from(
-                key: const Key('Breakpoints.small'),
+                key: const Key("Breakpoints.small"),
                 builder: (BuildContext context) => Container(),
               ),
               Breakpoints.mediumAndUp: SlotLayout.from(
-                key: const Key('Breakpoints.mediumAndUp'),
+                key: const Key("Breakpoints.mediumAndUp"),
                 builder: (BuildContext context) => Container(),
               ),
             },

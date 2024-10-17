@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
+import "package:custom_adaptive_scaffold/custom_adaptive_scaffold.dart";
+import "package:flutter/material.dart";
 
 void main() {
   runApp(const MyApp());
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const Row(
           children: <Widget>[
             SizedBox(width: 27),
-            Text('Folders', style: TextStyle(fontSize: 16)),
+            Text("Folders", style: TextStyle(fontSize: 16)),
           ],
         ),
         const SizedBox(height: 10),
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(width: 21),
             const Flexible(
               child: Text(
-                'Freelance',
+                "Freelance",
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(width: 21),
             const Flexible(
               child: Text(
-                'Mortgage',
+                "Mortgage",
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(width: 21),
             const Flexible(
-              child: Text('Taxes', overflow: TextOverflow.ellipsis),
+              child: Text("Taxes", overflow: TextOverflow.ellipsis),
             ),
           ],
         ),
@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(width: 21),
             const Flexible(
-              child: Text('Receipts', overflow: TextOverflow.ellipsis),
+              child: Text("Receipts", overflow: TextOverflow.ellipsis),
             ),
           ],
         ),
@@ -149,22 +149,22 @@ class _MyHomePageState extends State<MyHomePage> {
     // Define the list of destinations to be used within the app.
     const List<NavigationDestination> destinations = <NavigationDestination>[
       NavigationDestination(
-        label: 'Inbox',
+        label: "Inbox",
         icon: Icon(Icons.inbox_outlined),
         selectedIcon: Icon(Icons.inbox),
       ),
       NavigationDestination(
-        label: 'Articles',
+        label: "Articles",
         icon: Icon(Icons.article_outlined),
         selectedIcon: Icon(Icons.article),
       ),
       NavigationDestination(
-        label: 'Chat',
+        label: "Chat",
         icon: Icon(Icons.chat_outlined),
         selectedIcon: Icon(Icons.chat),
       ),
       NavigationDestination(
-        label: 'Video',
+        label: "Video",
         icon: Icon(Icons.video_call_outlined),
         selectedIcon: Icon(Icons.video_call),
       ),
@@ -183,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
         config: <Breakpoint, SlotLayoutConfig>{
           Breakpoints.medium: SlotLayout.from(
             inAnimation: AdaptiveScaffold.leftOutIn,
-            key: const Key('Primary Navigation Medium'),
+            key: const Key("Primary Navigation Medium"),
             builder: (_) => AdaptiveScaffold.standardNavigationRail(
               selectedIndex: selectedNavigation,
               onDestinationSelected: (int newIndex) {
@@ -193,8 +193,10 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               leading: const Icon(Icons.menu),
               destinations: destinations
-                  .map((NavigationDestination destination) =>
-                      AdaptiveScaffold.toRailDestination(destination))
+                  .map(
+                    (NavigationDestination destination) =>
+                        AdaptiveScaffold.toRailDestination(destination),
+                  )
                   .toList(),
               backgroundColor: navRailTheme.backgroundColor,
               selectedIconTheme: navRailTheme.selectedIconTheme,
@@ -204,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Breakpoints.mediumLarge: SlotLayout.from(
-            key: const Key('Primary Navigation MediumLarge'),
+            key: const Key("Primary Navigation MediumLarge"),
             inAnimation: AdaptiveScaffold.leftOutIn,
             builder: (_) => AdaptiveScaffold.standardNavigationRail(
               selectedIndex: selectedNavigation,
@@ -218,15 +220,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
-                    'REPLY',
+                    "REPLY",
                     style: headerColor,
                   ),
-                  const Icon(Icons.menu_open)
+                  const Icon(Icons.menu_open),
                 ],
               ),
               destinations: destinations
-                  .map((NavigationDestination destination) =>
-                      AdaptiveScaffold.toRailDestination(destination))
+                  .map(
+                    (NavigationDestination destination) =>
+                        AdaptiveScaffold.toRailDestination(destination),
+                  )
                   .toList(),
               trailing: trailingNavRail,
               backgroundColor: navRailTheme.backgroundColor,
@@ -237,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Breakpoints.large: SlotLayout.from(
-            key: const Key('Primary Navigation Large'),
+            key: const Key("Primary Navigation Large"),
             inAnimation: AdaptiveScaffold.leftOutIn,
             builder: (_) => AdaptiveScaffold.standardNavigationRail(
               selectedIndex: selectedNavigation,
@@ -251,15 +255,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
-                    'REPLY',
+                    "REPLY",
                     style: headerColor,
                   ),
-                  const Icon(Icons.menu_open)
+                  const Icon(Icons.menu_open),
                 ],
               ),
               destinations: destinations
-                  .map((NavigationDestination destination) =>
-                      AdaptiveScaffold.toRailDestination(destination))
+                  .map(
+                    (NavigationDestination destination) =>
+                        AdaptiveScaffold.toRailDestination(destination),
+                  )
                   .toList(),
               trailing: trailingNavRail,
               backgroundColor: navRailTheme.backgroundColor,
@@ -270,7 +276,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Breakpoints.extraLarge: SlotLayout.from(
-            key: const Key('Primary Navigation ExtraLarge'),
+            key: const Key("Primary Navigation ExtraLarge"),
             inAnimation: AdaptiveScaffold.leftOutIn,
             builder: (_) => AdaptiveScaffold.standardNavigationRail(
               selectedIndex: selectedNavigation,
@@ -284,15 +290,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
-                    'REPLY',
+                    "REPLY",
                     style: headerColor,
                   ),
-                  const Icon(Icons.menu_open)
+                  const Icon(Icons.menu_open),
                 ],
               ),
               destinations: destinations
-                  .map((NavigationDestination destination) =>
-                      AdaptiveScaffold.toRailDestination(destination))
+                  .map(
+                    (NavigationDestination destination) =>
+                        AdaptiveScaffold.toRailDestination(destination),
+                  )
                   .toList(),
               trailing: trailingNavRail,
               backgroundColor: navRailTheme.backgroundColor,
@@ -309,29 +317,29 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SlotLayout(
         config: <Breakpoint, SlotLayoutConfig>{
           Breakpoints.small: SlotLayout.from(
-            key: const Key('Body Small'),
+            key: const Key("Body Small"),
             builder: (_) => ListView.builder(
               itemCount: children.length,
               itemBuilder: (BuildContext context, int index) => children[index],
             ),
           ),
           Breakpoints.medium: SlotLayout.from(
-            key: const Key('Body Medium'),
+            key: const Key("Body Medium"),
             builder: (_) =>
                 GridView.count(crossAxisCount: 2, children: children),
           ),
           Breakpoints.mediumLarge: SlotLayout.from(
-            key: const Key('Body MediumLarge'),
+            key: const Key("Body MediumLarge"),
             builder: (_) =>
                 GridView.count(crossAxisCount: 3, children: children),
           ),
           Breakpoints.large: SlotLayout.from(
-            key: const Key('Body Large'),
+            key: const Key("Body Large"),
             builder: (_) =>
                 GridView.count(crossAxisCount: 4, children: children),
           ),
           Breakpoints.extraLarge: SlotLayout.from(
-            key: const Key('Body ExtraLarge'),
+            key: const Key("Body ExtraLarge"),
             builder: (_) =>
                 GridView.count(crossAxisCount: 5, children: children),
           ),
@@ -342,7 +350,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigation: SlotLayout(
         config: <Breakpoint, SlotLayoutConfig>{
           Breakpoints.small: SlotLayout.from(
-            key: const Key('Bottom Navigation Small'),
+            key: const Key("Bottom Navigation Small"),
             inAnimation: AdaptiveScaffold.bottomToTop,
             outAnimation: AdaptiveScaffold.topToBottom,
             builder: (_) => AdaptiveScaffold.standardBottomNavigationBar(
@@ -354,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               },
             ),
-          )
+          ),
         },
       ),
     );

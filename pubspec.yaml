@@ -1,23 +1,23 @@
-name: flutter_adaptive_scaffold
+name: custom_adaptive_scaffold
 description: Widgets to easily build adaptive layouts, including navigation elements.
-version: 0.3.1
-issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
-repository: https://github.com/flutter/packages/tree/main/packages/flutter_adaptive_scaffold
+version: 1.0.0
+issue_tracker: https://github.com/hanskokx/custom_adaptive_scaffold/issues
+repository: https://github.com/hanskokx/custom_adaptive_scaffold
 
 environment:
-  sdk: ^3.4.0
-  flutter: ">=3.22.0"
+  sdk: ^3.5.3
+  flutter: ">=3.24.3"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
+  arcane_analysis: ^1.0.1
   flutter_test:
     sdk: flutter
 
 topics:
   - layout
-  - ui
   - adaptive
   - responsive

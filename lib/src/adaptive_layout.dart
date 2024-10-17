@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:ui';
-import 'package:flutter/widgets.dart';
-import 'breakpoints.dart';
-import 'slot_layout.dart';
+import "dart:ui";
+import "package:flutter/widgets.dart";
+import "breakpoints.dart";
+import "slot_layout.dart";
 
 enum _SlotIds {
   primaryNavigation,
@@ -275,14 +275,18 @@ class _AdaptiveLayoutState extends State<AdaptiveLayout>
         key,
         (SlotLayoutConfig? val) => val,
         ifAbsent: () => SlotLayout.pickWidget(
-            context, value?.config ?? <Breakpoint, SlotLayoutConfig?>{}),
+          context,
+          value?.config ?? <Breakpoint, SlotLayoutConfig?>{},
+        ),
       );
     });
     final List<Widget> entries = slots.entries
         .map((MapEntry<String, SlotLayout?> entry) {
           if (entry.value != null) {
             return LayoutId(
-                id: entry.key, child: entry.value ?? const SizedBox());
+              id: entry.key,
+              child: entry.value ?? const SizedBox(),
+            );
           }
         })
         .whereType<Widget>()
@@ -360,8 +364,12 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
       if (isAnimating.contains(_SlotIds.secondaryBody.name)) {
         return internalAnimations
             ? Tween<double>(begin: begin, end: end)
-                .animate(CurvedAnimation(
-                    parent: controller, curve: Curves.easeInOutCubic))
+                .animate(
+                  CurvedAnimation(
+                    parent: controller,
+                    curve: Curves.easeInOutCubic,
+                  ),
+                )
                 .value
             : end;
       }
@@ -514,8 +522,10 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
             currentBodySize = layoutChild(
               _SlotIds.body.name,
               BoxConstraints.tight(
-                Size(animatedSize(remainingWidth, finalBodySize),
-                    remainingHeight),
+                Size(
+                  animatedSize(remainingWidth, finalBodySize),
+                  remainingHeight,
+                ),
               ),
             );
             layoutChild(
@@ -591,14 +601,18 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
             Offset(currentSBodySize.width + leftMargin + hingeWidth, topMargin),
           );
           positionChild(
-              _SlotIds.secondaryBody.name, Offset(leftMargin, topMargin));
+            _SlotIds.secondaryBody.name,
+            Offset(leftMargin, topMargin),
+          );
         } else {
           positionChild(
             _SlotIds.body.name,
             Offset(currentSBodySize.width + leftMargin, topMargin),
           );
           positionChild(
-              _SlotIds.secondaryBody.name, Offset(leftMargin, topMargin));
+            _SlotIds.secondaryBody.name,
+            Offset(leftMargin, topMargin),
+          );
         }
       } else {
         positionChild(_SlotIds.body.name, Offset(leftMargin, topMargin));
@@ -607,7 +621,9 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
             positionChild(
               _SlotIds.secondaryBody.name,
               Offset(
-                  currentBodySize.width + leftMargin + hingeWidth, topMargin),
+                currentBodySize.width + leftMargin + hingeWidth,
+                topMargin,
+              ),
             );
           } else {
             positionChild(

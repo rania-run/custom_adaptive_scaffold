@@ -2,22 +2,22 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import "package:flutter/material.dart";
+import "package:go_router/go_router.dart";
 
-import 'pages/pages.dart';
-import 'scaffold_shell.dart';
+import "pages/pages.dart";
+import "scaffold_shell.dart";
 
 /// The root navigator key for the main router of the app.
 final GlobalKey<NavigatorState> rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
+    GlobalKey<NavigatorState>(debugLabel: "root");
 
 final GlobalKey<NavigatorState> _homeNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'home');
+    GlobalKey<NavigatorState>(debugLabel: "home");
 final GlobalKey<NavigatorState> _counterNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'counter');
+    GlobalKey<NavigatorState>(debugLabel: "counter");
 final GlobalKey<NavigatorState> _moreNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'more');
+    GlobalKey<NavigatorState>(debugLabel: "more");
 
 /// The [AppRouter] maintains the main route configuration for the app.
 ///
@@ -35,7 +35,7 @@ class AppRouter {
       return const MaterialPage<void>(child: NavigationErrorPage());
     },
     redirect: (BuildContext context, GoRouterState state) {
-      if (state.uri.path == '/') {
+      if (state.uri.path == "/") {
         return HomePage.path;
       }
       return null;
@@ -103,25 +103,27 @@ class AppRouter {
             },
             routes: <RouteBase>[
               GoRoute(
-                  name: DetailOverviewPage.name,
-                  path: DetailOverviewPage.path,
-                  pageBuilder: (BuildContext context, GoRouterState state) {
-                    return const MaterialPage<void>(
-                      child: DetailOverviewPage(),
-                    );
-                  },
-                  routes: <RouteBase>[
-                    GoRoute(
-                      name: DetailPage.name,
-                      path: DetailPage.path,
-                      pageBuilder: (BuildContext context, GoRouterState state) {
-                        return MaterialPage<void>(
-                          child: DetailPage(
-                              itemName: state.uri.queryParameters['itemName']!),
-                        );
-                      },
-                    ),
-                  ]),
+                name: DetailOverviewPage.name,
+                path: DetailOverviewPage.path,
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return const MaterialPage<void>(
+                    child: DetailOverviewPage(),
+                  );
+                },
+                routes: <RouteBase>[
+                  GoRoute(
+                    name: DetailPage.name,
+                    path: DetailPage.path,
+                    pageBuilder: (BuildContext context, GoRouterState state) {
+                      return MaterialPage<void>(
+                        child: DetailPage(
+                          itemName: state.uri.queryParameters["itemName"]!,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
               GoRoute(
                 name: DetailModalPage.name,
                 path: DetailModalPage.path,

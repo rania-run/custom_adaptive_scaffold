@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/widgets.dart';
-import 'breakpoints.dart';
+import "package:flutter/widgets.dart";
+
+import "breakpoints.dart";
 
 /// A Widget that takes a mapping of [SlotLayoutConfig]s to [Breakpoint]s and
 /// adds the appropriate Widget based on the current screen size.
@@ -18,7 +19,9 @@ class SlotLayout extends StatefulWidget {
   /// Given a context and a config, it returns the [SlotLayoutConfig] that will
   /// be chosen from the config under the context's conditions.
   static SlotLayoutConfig? pickWidget(
-      BuildContext context, Map<Breakpoint, SlotLayoutConfig?> config) {
+    BuildContext context,
+    Map<Breakpoint, SlotLayoutConfig?> config,
+  ) {
     final Breakpoint? breakpoint =
         Breakpoint.activeBreakpointIn(context, config.keys.toList());
     return breakpoint != null && config.containsKey(breakpoint)
@@ -69,6 +72,7 @@ class SlotLayout extends StatefulWidget {
   ///  * [AnimatedSwitcher.defaultTransitionBuilder], which is what takes the
   ///   inAnimation and outAnimation.
   static SlotLayoutConfig from({
+    required Key key,
     WidgetBuilder? builder,
     Widget Function(Widget, Animation<double>)? inAnimation,
     Widget Function(Widget, Animation<double>)? outAnimation,
@@ -76,7 +80,6 @@ class SlotLayout extends StatefulWidget {
     Duration? outDuration,
     Curve? inCurve,
     Curve? outCurve,
-    required Key key,
   }) =>
       SlotLayoutConfig._(
         builder: builder,
@@ -102,37 +105,37 @@ class _SlotLayoutState extends State<SlotLayout>
     chosenWidget = SlotLayout.pickWidget(context, widget.config);
     bool hasAnimation = false;
     return AnimatedSwitcher(
-        duration:
-            chosenWidget?.inDuration ?? const Duration(milliseconds: 1000),
-        reverseDuration: chosenWidget?.outDuration,
-        switchInCurve: chosenWidget?.inCurve ?? Curves.linear,
-        switchOutCurve: chosenWidget?.outCurve ?? Curves.linear,
-        layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
-          final Stack elements = Stack(
-            children: <Widget>[
-              if (hasAnimation && previousChildren.isNotEmpty)
-                previousChildren.first,
-              if (currentChild != null) currentChild,
-            ],
-          );
-          return elements;
-        },
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          final SlotLayoutConfig configChild = child as SlotLayoutConfig;
-          if (child.key == chosenWidget?.key) {
-            return (configChild.inAnimation != null)
-                ? child.inAnimation!(child, animation)
-                : child;
-          } else {
-            if (configChild.outAnimation != null) {
-              hasAnimation = true;
-            }
-            return (configChild.outAnimation != null)
-                ? child.outAnimation!(child, ReverseAnimation(animation))
-                : child;
+      duration: chosenWidget?.inDuration ?? const Duration(milliseconds: 1000),
+      reverseDuration: chosenWidget?.outDuration,
+      switchInCurve: chosenWidget?.inCurve ?? Curves.linear,
+      switchOutCurve: chosenWidget?.outCurve ?? Curves.linear,
+      layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
+        final Stack elements = Stack(
+          children: <Widget>[
+            if (hasAnimation && previousChildren.isNotEmpty)
+              previousChildren.first,
+            if (currentChild != null) currentChild,
+          ],
+        );
+        return elements;
+      },
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        final SlotLayoutConfig configChild = child as SlotLayoutConfig;
+        if (child.key == chosenWidget?.key) {
+          return (configChild.inAnimation != null)
+              ? child.inAnimation!(child, animation)
+              : child;
+        } else {
+          if (configChild.outAnimation != null) {
+            hasAnimation = true;
           }
-        },
-        child: chosenWidget ?? SlotLayoutConfig.empty());
+          return (configChild.outAnimation != null)
+              ? child.outAnimation!(child, ReverseAnimation(animation))
+              : child;
+        }
+      },
+      child: chosenWidget ?? SlotLayoutConfig.empty(),
+    );
   }
 }
 
@@ -143,8 +146,8 @@ class SlotLayoutConfig extends StatelessWidget {
   /// Returns the child widget as is but holds properties to be accessed by other
   /// classes.
   const SlotLayoutConfig._({
-    super.key,
     required this.builder,
+    super.key,
     this.inAnimation,
     this.outAnimation,
     this.inDuration,
@@ -193,7 +196,7 @@ class SlotLayoutConfig extends StatelessWidget {
   /// An empty [SlotLayoutConfig] to be placed in a slot to indicate that the slot
   /// should show nothing.
   static SlotLayoutConfig empty() {
-    return const SlotLayoutConfig._(key: Key(''), builder: null);
+    return const SlotLayoutConfig._(key: Key(""), builder: null);
   }
 
   @override

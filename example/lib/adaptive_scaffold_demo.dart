@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
+import "package:custom_adaptive_scaffold/custom_adaptive_scaffold.dart";
+import "package:flutter/material.dart";
 
 void main() {
   runApp(const MyApp());
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
             color: const Color.fromARGB(255, 255, 201, 197),
             height: 400,
           ),
-        )
+        ),
     ];
     return AdaptiveScaffold(
       // An option to override the default transition duration.
@@ -102,27 +102,27 @@ class _MyHomePageState extends State<MyHomePage> {
         NavigationDestination(
           icon: Icon(Icons.inbox_outlined),
           selectedIcon: Icon(Icons.inbox),
-          label: 'Inbox',
+          label: "Inbox",
         ),
         NavigationDestination(
           icon: Icon(Icons.article_outlined),
           selectedIcon: Icon(Icons.article),
-          label: 'Articles',
+          label: "Articles",
         ),
         NavigationDestination(
           icon: Icon(Icons.chat_outlined),
           selectedIcon: Icon(Icons.chat),
-          label: 'Chat',
+          label: "Chat",
         ),
         NavigationDestination(
           icon: Icon(Icons.video_call_outlined),
           selectedIcon: Icon(Icons.video_call),
-          label: 'Video',
+          label: "Video",
         ),
         NavigationDestination(
           icon: Icon(Icons.home_outlined),
           selectedIcon: Icon(Icons.home),
-          label: 'Inbox',
+          label: "Inbox",
         ),
       ],
       smallBody: (_) => ListView.builder(

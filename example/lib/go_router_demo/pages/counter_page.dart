@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 /// The counter page.
 class CounterPage extends StatelessWidget {
@@ -10,19 +10,19 @@ class CounterPage extends StatelessWidget {
   const CounterPage({super.key});
 
   /// The path for the counter page.
-  static const String path = '/counter';
+  static const String path = "/counter";
 
   /// The name for the counter page.
-  static const String name = 'Counter';
+  static const String name = "Counter";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Counter Page'),
+        title: const Text("Counter Page"),
       ),
       body: const Center(
-        child: Text('Counter Page'),
+        child: Text("Counter Page"),
       ),
     );
   }

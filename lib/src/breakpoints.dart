@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-import '../flutter_adaptive_scaffold.dart';
+import "../custom_adaptive_scaffold.dart";
 
 /// A group of standard breakpoints built according to the material
 /// specifications for screen width size.
@@ -226,7 +226,7 @@ class Breakpoint {
   static const Set<TargetPlatform> desktop = <TargetPlatform>{
     TargetPlatform.linux,
     TargetPlatform.macOS,
-    TargetPlatform.windows
+    TargetPlatform.windows,
   };
 
   /// A set of [TargetPlatform]s that the [Breakpoint] will be active on mobile.
@@ -328,7 +328,9 @@ class Breakpoint {
   /// Returns the currently active [Breakpoint] based on the [BuildContext] and
   /// a list of [Breakpoint]s.
   static Breakpoint? activeBreakpointIn(
-      BuildContext context, List<Breakpoint> breakpoints) {
+    BuildContext context,
+    List<Breakpoint> breakpoints,
+  ) {
     Breakpoint? currentBreakpoint;
 
     for (final Breakpoint breakpoint in breakpoints) {

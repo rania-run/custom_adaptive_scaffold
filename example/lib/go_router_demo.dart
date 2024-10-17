@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-import 'go_router_demo/app_router.dart';
+import "go_router_demo/app_router.dart";
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      restorationScopeId: 'demo',
+      restorationScopeId: "demo",
       routerConfig: AppRouter.router,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
