@@ -19,6 +19,7 @@ class RailDestination extends StatefulWidget {
     this.indexLabel,
     this.useIndicator,
     this.padding,
+    this.margin,
     this.indicatorColor,
     this.indicatorShape,
     this.disabled = false,
@@ -39,6 +40,7 @@ class RailDestination extends StatefulWidget {
   final VoidCallback? onTap;
   final String? indexLabel;
   final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final bool? useIndicator;
   final Color? indicatorColor;
   final ShapeBorder? indicatorShape;
@@ -141,12 +143,12 @@ class _RailDestinationState extends State<RailDestination>
             navigationRailTheme.minWidth ??
             defaults.minWidth!) -
         (widget.padding ?? EdgeInsets.zero).horizontal -
-        // TODO(hans): Figure out where this value is coming from
-        32;
+        (widget.margin ?? EdgeInsets.zero).horizontal;
     final double minExtendedWidth = (widget.minExtendedWidth ??
             navigationRailTheme.minExtendedWidth ??
             defaults.minExtendedWidth!) -
-        (widget.padding ?? EdgeInsets.zero).horizontal;
+        (widget.padding ?? EdgeInsets.zero).horizontal -
+        (widget.margin ?? EdgeInsets.zero).horizontal;
 
     final bool selected = widget.selected ?? false;
 
@@ -221,6 +223,7 @@ class _RailDestinationState extends State<RailDestination>
               indicatorVerticalOffset,
         );
         final Widget iconPart = Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             if (spacing != null) spacing,
             SizedBox(
@@ -313,6 +316,7 @@ class _RailDestinationState extends State<RailDestination>
         final Animation<double> labelFadeAnimation =
             _destinationAnimation.drive(CurveTween(curve: interval));
         final double minHeight = material3 ? 0 : minWidth;
+
         final Widget topSpacing =
             SizedBox(height: material3 ? 0 : verticalPadding);
         final Widget labelSpacing = SizedBox(
@@ -455,27 +459,30 @@ class _RailDestinationState extends State<RailDestination>
       selected: widget.selected,
       child: Material(
         type: MaterialType.transparency,
-        child: Stack(
-          children: <Widget>[
-            // This is the splash overlay when hovering on an item
-            _IndicatorInkWell(
-              onTap: widget.disabled ? null : widget.onTap,
-              borderRadius: BorderRadius.all(
-                Radius.circular(minWidth / 2.0),
+        child: Container(
+          margin: widget.margin,
+          child: Stack(
+            children: <Widget>[
+              // This is the splash overlay when hovering on an item
+              _IndicatorInkWell(
+                onTap: widget.disabled ? null : widget.onTap,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(minWidth / 2.0),
+                ),
+                customBorder: widget.indicatorShape,
+                splashColor: effectiveSplashColor,
+                hoverColor: effectiveHoverColor,
+                useMaterial3: material3,
+                indicatorOffset: indicatorOffset,
+                applyXOffset: applyXOffset,
+                textDirection: textDirection,
+                child: content,
               ),
-              customBorder: widget.indicatorShape,
-              splashColor: effectiveSplashColor,
-              hoverColor: effectiveHoverColor,
-              useMaterial3: material3,
-              indicatorOffset: indicatorOffset,
-              applyXOffset: applyXOffset,
-              textDirection: textDirection,
-              child: content,
-            ),
-            Semantics(
-              label: widget.indexLabel,
-            ),
-          ],
+              Semantics(
+                label: widget.indexLabel,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -125,6 +125,7 @@ class AdaptiveScaffold extends StatefulWidget {
     this.groupAlignment,
     this.padding,
     this.navigationDestinationMargin,
+    this.navigationDestinationPadding,
   }) : assert(
           destinations.length >= 2,
           "At least two destinations are required",
@@ -320,6 +321,7 @@ class AdaptiveScaffold extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   final EdgeInsetsGeometry? navigationDestinationMargin;
+  final EdgeInsetsGeometry? navigationDestinationPadding;
 
   /// Callback function for when the index of a [NavigationRail] changes.
   static WidgetBuilder emptyBuilder = (_) => const SizedBox();
@@ -361,7 +363,8 @@ class AdaptiveScaffold extends StatefulWidget {
     TextStyle? unSelectedLabelTextStyle,
     NavigationRailLabelType? labelType = NavigationRailLabelType.none,
     EdgeInsetsGeometry? padding,
-    EdgeInsetsGeometry? selectedDestinationMargin,
+    EdgeInsetsGeometry? navigationDestinationMargin,
+    EdgeInsetsGeometry? navigationDestinationPadding,
   }) {
     if (extended && width == 72) {
       width = 192;
@@ -394,7 +397,10 @@ class AdaptiveScaffold extends StatefulWidget {
                         selectedLabelTextStyle: selectedLabelTextStyle,
                         unselectedLabelTextStyle: unSelectedLabelTextStyle,
                         destinations: destinations,
-                        navigationDestinationMargin: selectedDestinationMargin,
+                        navigationDestinationMargin:
+                            navigationDestinationMargin,
+                        navigationDestinationPadding:
+                            navigationDestinationPadding,
                       ),
                     ),
                   ),
@@ -638,7 +644,9 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 labelType: navRailTheme.labelType,
                 groupAlignment: widget.groupAlignment,
                 padding: widget.padding,
-                selectedDestinationMargin: widget.navigationDestinationMargin,
+                navigationDestinationMargin: widget.navigationDestinationMargin,
+                navigationDestinationPadding:
+                    widget.navigationDestinationPadding,
               ),
             ),
             widget.mediumLargeBreakpoint: SlotLayout.from(
@@ -682,7 +690,9 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 padding: widget.padding,
-                selectedDestinationMargin: widget.navigationDestinationMargin,
+                navigationDestinationMargin: widget.navigationDestinationMargin,
+                navigationDestinationPadding:
+                    widget.navigationDestinationPadding,
               ),
             ),
             widget.extraLargeBreakpoint: SlotLayout.from(
@@ -706,7 +716,9 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 padding: widget.padding,
-                selectedDestinationMargin: widget.navigationDestinationMargin,
+                navigationDestinationMargin: widget.navigationDestinationMargin,
+                navigationDestinationPadding:
+                    widget.navigationDestinationPadding,
               ),
             ),
           },
