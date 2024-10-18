@@ -6,6 +6,7 @@ import "package:flutter/material.dart";
 
 import "adaptive_layout.dart";
 import "breakpoints.dart";
+import "custom_navigation_rail.dart";
 import "slot_layout.dart";
 
 /// Spacing value of the compact breakpoint according to
@@ -123,6 +124,7 @@ class AdaptiveScaffold extends StatefulWidget {
     this.navigationRailDestinationBuilder,
     this.groupAlignment,
     this.padding,
+    this.selectedDestinationMargin,
   }) : assert(
           destinations.length >= 2,
           "At least two destinations are required",
@@ -317,6 +319,8 @@ class AdaptiveScaffold extends StatefulWidget {
   /// Applies a [Padding] around the [NavigationRail].
   final EdgeInsetsGeometry? padding;
 
+  final EdgeInsetsGeometry? selectedDestinationMargin;
+
   /// Callback function for when the index of a [NavigationRail] changes.
   static WidgetBuilder emptyBuilder = (_) => const SizedBox();
 
@@ -357,6 +361,7 @@ class AdaptiveScaffold extends StatefulWidget {
     TextStyle? unSelectedLabelTextStyle,
     NavigationRailLabelType? labelType = NavigationRailLabelType.none,
     EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? selectedDestinationPadding,
   }) {
     if (extended && width == 72) {
       width = 192;
@@ -375,7 +380,7 @@ class AdaptiveScaffold extends StatefulWidget {
                     constraints:
                         BoxConstraints(minHeight: constraints.maxHeight),
                     child: IntrinsicHeight(
-                      child: NavigationRail(
+                      child: CustomNavigationRail(
                         labelType: labelType,
                         leading: leading,
                         trailing: trailing,
@@ -389,6 +394,7 @@ class AdaptiveScaffold extends StatefulWidget {
                         selectedLabelTextStyle: selectedLabelTextStyle,
                         unselectedLabelTextStyle: unSelectedLabelTextStyle,
                         destinations: destinations,
+                        selectedDestinationMargin: selectedDestinationPadding,
                       ),
                     ),
                   ),
@@ -632,6 +638,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 labelType: navRailTheme.labelType,
                 groupAlignment: widget.groupAlignment,
                 padding: widget.padding,
+                selectedDestinationPadding: widget.selectedDestinationMargin,
               ),
             ),
             widget.mediumLargeBreakpoint: SlotLayout.from(
@@ -675,6 +682,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 padding: widget.padding,
+                selectedDestinationPadding: widget.selectedDestinationMargin,
               ),
             ),
             widget.extraLargeBreakpoint: SlotLayout.from(
@@ -698,6 +706,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 padding: widget.padding,
+                selectedDestinationPadding: widget.selectedDestinationMargin,
               ),
             ),
           },
