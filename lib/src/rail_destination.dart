@@ -137,11 +137,16 @@ class _RailDestinationState extends State<RailDestination>
     Offset indicatorOffset;
     bool applyXOffset = false;
 
-    final double minWidth =
-        widget.minWidth ?? navigationRailTheme.minWidth ?? defaults.minWidth!;
-    final double minExtendedWidth = widget.minExtendedWidth ??
-        navigationRailTheme.minExtendedWidth ??
-        defaults.minExtendedWidth!;
+    final double minWidth = (widget.minWidth ??
+            navigationRailTheme.minWidth ??
+            defaults.minWidth!) -
+        (widget.padding ?? EdgeInsets.zero).horizontal -
+        // TODO(hans): Figure out where this value is coming from
+        32;
+    final double minExtendedWidth = (widget.minExtendedWidth ??
+            navigationRailTheme.minExtendedWidth ??
+            defaults.minExtendedWidth!) -
+        (widget.padding ?? EdgeInsets.zero).horizontal;
 
     final bool selected = widget.selected ?? false;
 
@@ -409,10 +414,7 @@ class _RailDestinationState extends State<RailDestination>
             minWidth: minWidth,
             minHeight: minHeight,
           ),
-          padding: widget.padding ??
-              const EdgeInsets.symmetric(
-                horizontal: _horizontalDestinationPadding,
-              ),
+          padding: widget.padding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

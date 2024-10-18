@@ -515,7 +515,10 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
                                 labelTextStyle: widget.selectedIndex == i
                                     ? selectedLabelTextStyle
                                     : unselectedLabelTextStyle,
-                                padding: widget.destinations[i].padding,
+                                padding: widget.destinations[i].padding ??
+                                    const EdgeInsets.symmetric(
+                                      horizontal: _horizontalDestinationPadding,
+                                    ),
                                 useIndicator: useIndicator,
                                 indicatorColor:
                                     useIndicator ? indicatorColor : null,
