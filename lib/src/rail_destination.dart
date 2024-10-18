@@ -435,7 +435,6 @@ class _RailDestinationState extends State<RailDestination>
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               topSpacing,
-              // _AddIndicator is only shown on selected menu items.
               _AddIndicator(
                 addIndicator: useIndicator,
                 indicatorColor: indicatorColor,
