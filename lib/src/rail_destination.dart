@@ -116,8 +116,9 @@ class _RailDestinationState extends State<RailDestination>
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     final NavigationRailThemeData navigationRailTheme =
-        NavigationRailTheme.of(context);
+        theme.navigationRailTheme;
     final NavigationRailThemeData defaults = Theme.of(context).useMaterial3
         ? _NavigationRailDefaultsM3(context)
         : _NavigationRailDefaultsM2(context);
@@ -126,12 +127,23 @@ class _RailDestinationState extends State<RailDestination>
         navigationRailTheme.useIndicator ??
         defaults.useIndicator!;
 
+    final Color? indicatorColor = useIndicator
+        ? widget.indicatorColor ??
+            navigationRailTheme.indicatorColor ??
+            defaults.indicatorColor
+        : null;
+
+    final ShapeBorder? indicatorShape = useIndicator
+        ? widget.indicatorShape ??
+            navigationRailTheme.indicatorShape ??
+            defaults.indicatorShape
+        : null;
+
     assert(
-      useIndicator || widget.indicatorColor == null,
+      useIndicator || indicatorColor == null,
       "[NavigationRail.indicatorColor] does not have an effect when [NavigationRail.useIndicator] is false",
     );
 
-    final ThemeData theme = Theme.of(context);
     final TextDirection textDirection = Directionality.of(context);
     final bool material3 = theme.useMaterial3;
     final EdgeInsets destinationPadding =
@@ -233,8 +245,8 @@ class _RailDestinationState extends State<RailDestination>
                 // _AddIndicator is only shown on selected menu items.
                 child: _AddIndicator(
                   addIndicator: useIndicator,
-                  indicatorColor: widget.indicatorColor,
-                  indicatorShape: widget.indicatorShape,
+                  indicatorColor: indicatorColor,
+                  indicatorShape: indicatorShape,
                   isCircular: !material3,
                   indicatorAnimation: _destinationAnimation,
                   child: themedIcon,
@@ -426,8 +438,8 @@ class _RailDestinationState extends State<RailDestination>
               // _AddIndicator is only shown on selected menu items.
               _AddIndicator(
                 addIndicator: useIndicator,
-                indicatorColor: widget.indicatorColor,
-                indicatorShape: widget.indicatorShape,
+                indicatorColor: indicatorColor,
+                indicatorShape: indicatorShape,
                 isCircular: false,
                 indicatorAnimation: _destinationAnimation,
                 child: Row(
@@ -469,7 +481,7 @@ class _RailDestinationState extends State<RailDestination>
                 borderRadius: BorderRadius.all(
                   Radius.circular(minWidth / 2.0),
                 ),
-                customBorder: widget.indicatorShape,
+                customBorder: indicatorShape,
                 splashColor: effectiveSplashColor,
                 hoverColor: effectiveHoverColor,
                 useMaterial3: material3,
