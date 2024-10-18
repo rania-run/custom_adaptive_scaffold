@@ -6,8 +6,7 @@ import "dart:ui";
 
 import "package:flutter/material.dart";
 
-const double _kCircularIndicatorDiameter = 56;
-const double _kIndicatorHeight = 32;
+part "rail_destination.dart";
 
 /// A Material Design widget that is meant to be displayed at the left or right of an
 /// app to navigate between a small number of views, typically between three and
@@ -103,7 +102,7 @@ class CustomNavigationRail extends StatefulWidget {
     this.useIndicator,
     this.indicatorColor,
     this.indicatorShape,
-    this.selectedDestinationMargin,
+    this.navigationDestinationMargin,
   })  : assert(destinations.length >= 2),
         assert(
           selectedIndex == null ||
@@ -320,7 +319,9 @@ class CustomNavigationRail extends StatefulWidget {
   /// that is null, defaults to [StadiumBorder].
   final ShapeBorder? indicatorShape;
 
-  final EdgeInsetsGeometry? selectedDestinationMargin;
+  /// Overrides the default value of [CustomNavigationRail]'s margin around the
+  /// [NavigationDestination] widgets.
+  final EdgeInsetsGeometry? navigationDestinationMargin;
 
   /// Returns the animation that controls the [CustomNavigationRail.extended] state.
   ///
@@ -411,11 +412,7 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
     final double elevation = widget.elevation ??
         navigationRailTheme.elevation ??
         defaults.elevation!;
-    final double minWidth =
-        widget.minWidth ?? navigationRailTheme.minWidth ?? defaults.minWidth!;
-    final double minExtendedWidth = widget.minExtendedWidth ??
-        navigationRailTheme.minExtendedWidth ??
-        defaults.minExtendedWidth!;
+
     final TextStyle unselectedLabelTextStyle =
         widget.unselectedLabelTextStyle ??
             navigationRailTheme.unselectedLabelTextStyle ??
@@ -460,6 +457,9 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
 
     final bool isRTLDirection = Directionality.of(context) == TextDirection.rtl;
 
+    final EdgeInsetsGeometry railDestinationMargin =
+        widget.navigationDestinationMargin ?? EdgeInsets.zero;
+
     return _ExtendedNavigationRailAnimation(
       animation: _extendedAnimation,
       child: Semantics(
@@ -480,58 +480,63 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
                 Expanded(
                   child: Align(
                     alignment: Alignment(0, groupAlignment),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        for (int i = 0; i < widget.destinations.length; i += 1)
-                          Container(
-                            margin: widget.selectedDestinationMargin,
-                            decoration: BoxDecoration(
-                              borderRadius: shapeIsRoundedRectangle
-                                  ? indicatorShape.borderRadius
-                                  : null,
-                              color: widget.selectedIndex == i && useIndicator
-                                  ? indicatorColor ??
-                                      Theme.of(context).colorScheme.secondary
-                                  : Colors.transparent,
-                            ),
-                            child: _RailDestination(
-                              minWidth: minWidth,
-                              minExtendedWidth: minExtendedWidth,
-                              extendedTransitionAnimation: _extendedAnimation,
-                              selected: widget.selectedIndex == i,
-                              icon: widget.selectedIndex == i
-                                  ? widget.destinations[i].selectedIcon
-                                  : widget.destinations[i].icon,
-                              label: widget.destinations[i].label,
-                              destinationAnimation: _destinationAnimations[i],
-                              labelType: labelType,
-                              iconTheme: widget.selectedIndex == i
-                                  ? selectedIconTheme
-                                  : effectiveUnselectedIconTheme,
-                              labelTextStyle: widget.selectedIndex == i
-                                  ? selectedLabelTextStyle
-                                  : unselectedLabelTextStyle,
-                              padding: widget.destinations[i].padding,
-                              useIndicator: useIndicator,
-                              indicatorColor:
-                                  useIndicator ? indicatorColor : null,
-                              indicatorShape:
-                                  useIndicator ? indicatorShape : null,
-                              onTap: () {
-                                if (widget.onDestinationSelected != null) {
-                                  widget.onDestinationSelected!(i);
-                                }
-                              },
-                              indexLabel: localizations.tabLabel(
-                                tabIndex: i + 1,
-                                tabCount: widget.destinations.length,
+                    child: Padding(
+                      padding: railDestinationMargin,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          for (int i = 0;
+                              i < widget.destinations.length;
+                              i += 1)
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: shapeIsRoundedRectangle
+                                    ? indicatorShape.borderRadius
+                                    : null,
+                                color: widget.selectedIndex == i && useIndicator
+                                    ? indicatorColor ??
+                                        Theme.of(context).colorScheme.secondary
+                                    : Colors.transparent,
                               ),
-                              disabled: widget.destinations[i].disabled,
+                              child: RailDestination(
+                                minWidth: widget.minWidth,
+                                minExtendedWidth: widget.minExtendedWidth,
+                                extendedTransitionAnimation: _extendedAnimation,
+                                selected: widget.selectedIndex == i,
+                                icon: widget.selectedIndex == i
+                                    ? widget.destinations[i].selectedIcon
+                                    : widget.destinations[i].icon,
+                                label: widget.destinations[i].label,
+                                destinationAnimation: _destinationAnimations[i],
+                                labelType: labelType,
+                                iconTheme: widget.selectedIndex == i
+                                    ? selectedIconTheme
+                                    : effectiveUnselectedIconTheme,
+                                labelTextStyle: widget.selectedIndex == i
+                                    ? selectedLabelTextStyle
+                                    : unselectedLabelTextStyle,
+                                padding: widget.destinations[i].padding,
+                                useIndicator: useIndicator,
+                                indicatorColor:
+                                    useIndicator ? indicatorColor : null,
+                                indicatorShape:
+                                    useIndicator ? indicatorShape : null,
+                                onTap: () {
+                                  if (widget.onDestinationSelected != null) {
+                                    widget.onDestinationSelected!(i);
+                                  }
+                                },
+                                indexLabel: localizations.tabLabel(
+                                  tabIndex: i + 1,
+                                  tabCount: widget.destinations.length,
+                                ),
+                                disabled: widget.destinations[i].disabled,
+                                extended: widget.extended,
+                              ),
                             ),
-                          ),
-                        if (widget.trailing != null) widget.trailing!,
-                      ],
+                          if (widget.trailing != null) widget.trailing!,
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -591,634 +596,3 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
     });
   }
 }
-
-class _RailDestination extends StatefulWidget {
-  const _RailDestination({
-    required this.minWidth,
-    required this.minExtendedWidth,
-    required this.icon,
-    required this.label,
-    required this.destinationAnimation,
-    required this.extendedTransitionAnimation,
-    required this.labelType,
-    required this.selected,
-    required this.iconTheme,
-    required this.labelTextStyle,
-    required this.onTap,
-    required this.indexLabel,
-    required this.useIndicator,
-    this.padding,
-    this.indicatorColor,
-    this.indicatorShape,
-    this.disabled = false,
-  });
-
-  final double minWidth;
-  final double minExtendedWidth;
-  final Widget icon;
-  final Widget label;
-  final Animation<double> destinationAnimation;
-  final NavigationRailLabelType labelType;
-  final bool selected;
-  final Animation<double> extendedTransitionAnimation;
-  final IconThemeData iconTheme;
-  final TextStyle labelTextStyle;
-  final VoidCallback onTap;
-  final String indexLabel;
-  final EdgeInsetsGeometry? padding;
-  final bool useIndicator;
-  final Color? indicatorColor;
-  final ShapeBorder? indicatorShape;
-  final bool disabled;
-
-  @override
-  State<_RailDestination> createState() => _RailDestinationState();
-}
-
-class _RailDestinationState extends State<_RailDestination> {
-  late CurvedAnimation _positionAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _setPositionAnimation();
-  }
-
-  @override
-  void didUpdateWidget(_RailDestination oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.destinationAnimation != oldWidget.destinationAnimation) {
-      _positionAnimation.dispose();
-      _setPositionAnimation();
-    }
-  }
-
-  void _setPositionAnimation() {
-    _positionAnimation = CurvedAnimation(
-      parent: ReverseAnimation(widget.destinationAnimation),
-      curve: Curves.easeInOut,
-      reverseCurve: Curves.easeInOut.flipped,
-    );
-  }
-
-  @override
-  void dispose() {
-    _positionAnimation.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    assert(
-      widget.useIndicator || widget.indicatorColor == null,
-      "[NavigationRail.indicatorColor] does not have an effect when [NavigationRail.useIndicator] is false",
-    );
-
-    final ThemeData theme = Theme.of(context);
-    final TextDirection textDirection = Directionality.of(context);
-    final bool material3 = theme.useMaterial3;
-    final EdgeInsets destinationPadding =
-        (widget.padding ?? EdgeInsets.zero).resolve(textDirection);
-    Offset indicatorOffset;
-    bool applyXOffset = false;
-
-    final Widget themedIcon = IconTheme(
-      data: widget.disabled
-          ? widget.iconTheme
-              .copyWith(color: theme.colorScheme.onSurface.withOpacity(0.38))
-          : widget.iconTheme,
-      child: widget.icon,
-    );
-    final Widget styledLabel = DefaultTextStyle(
-      style: widget.disabled
-          ? widget.labelTextStyle
-              .copyWith(color: theme.colorScheme.onSurface.withOpacity(0.38))
-          : widget.labelTextStyle,
-      child: widget.label,
-    );
-
-    Widget content;
-
-    // The indicator height is fixed and equal to _kIndicatorHeight.
-    // When the icon height is larger than the indicator height the indicator
-    // vertical offset is used to vertically center the indicator.
-    final bool isLargeIconSize = widget.iconTheme.size != null &&
-        widget.iconTheme.size! > _kIndicatorHeight;
-    final double indicatorVerticalOffset =
-        isLargeIconSize ? (widget.iconTheme.size! - _kIndicatorHeight) / 2 : 0;
-
-    switch (widget.labelType) {
-      case NavigationRailLabelType.none:
-        // Split the destination spacing across the top and bottom to keep the icon centered.
-        final Widget? spacing = material3
-            ? const SizedBox(height: _verticalDestinationSpacingM3 / 2)
-            : null;
-        indicatorOffset = Offset(
-          widget.minWidth / 2 + destinationPadding.left,
-          _verticalDestinationSpacingM3 / 2 +
-              destinationPadding.top +
-              indicatorVerticalOffset,
-        );
-        final Widget iconPart = Column(
-          children: <Widget>[
-            if (spacing != null) spacing,
-            SizedBox(
-              width: widget.minWidth,
-              height: material3 ? null : widget.minWidth,
-              child: Center(
-                // _AddIndicator is only shown on selected menu items.
-                child: _AddIndicator(
-                  addIndicator: widget.useIndicator,
-                  indicatorColor: widget.indicatorColor,
-                  indicatorShape: widget.indicatorShape,
-                  isCircular: !material3,
-                  indicatorAnimation: widget.destinationAnimation,
-                  child: themedIcon,
-                ),
-              ),
-            ),
-            if (spacing != null) spacing,
-          ],
-        );
-        if (widget.extendedTransitionAnimation.value == 0) {
-          content = Padding(
-            padding: widget.padding ?? EdgeInsets.zero,
-            child: Stack(
-              children: <Widget>[
-                iconPart,
-                // For semantics when label is not showing,
-                SizedBox.shrink(
-                  child: Visibility.maintain(
-                    visible: false,
-                    child: widget.label,
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          final Animation<double> labelFadeAnimation = widget
-              .extendedTransitionAnimation
-              .drive(CurveTween(curve: const Interval(0.0, 0.25)));
-          applyXOffset = true;
-          content = Padding(
-            padding: widget.padding ?? EdgeInsets.zero,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: lerpDouble(
-                  widget.minWidth,
-                  widget.minExtendedWidth,
-                  widget.extendedTransitionAnimation.value,
-                )!,
-              ),
-              child: ClipRect(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    iconPart,
-                    Flexible(
-                      child: Align(
-                        heightFactor: 1.0,
-                        widthFactor: widget.extendedTransitionAnimation.value,
-                        alignment: AlignmentDirectional.centerStart,
-                        child: FadeTransition(
-                          alwaysIncludeSemantics: true,
-                          opacity: labelFadeAnimation,
-                          child: styledLabel,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: _horizontalDestinationPadding *
-                          widget.extendedTransitionAnimation.value,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
-      case NavigationRailLabelType.selected:
-        final double appearingAnimationValue = 1 - _positionAnimation.value;
-        final double verticalPadding = lerpDouble(
-          _verticalDestinationPaddingNoLabel,
-          _verticalDestinationPaddingWithLabel,
-          appearingAnimationValue,
-        )!;
-        final Interval interval = widget.selected
-            ? const Interval(0.25, 0.75)
-            : const Interval(0.75, 1.0);
-        final Animation<double> labelFadeAnimation =
-            widget.destinationAnimation.drive(CurveTween(curve: interval));
-        final double minHeight = material3 ? 0 : widget.minWidth;
-        final Widget topSpacing =
-            SizedBox(height: material3 ? 0 : verticalPadding);
-        final Widget labelSpacing = SizedBox(
-          height: material3
-              ? lerpDouble(
-                  0,
-                  _verticalIconLabelSpacingM3,
-                  appearingAnimationValue,
-                )!
-              : 0,
-        );
-        final Widget bottomSpacing = SizedBox(
-          height: material3 ? _verticalDestinationSpacingM3 : verticalPadding,
-        );
-        final double indicatorHorizontalPadding =
-            (destinationPadding.left / 2) - (destinationPadding.right / 2);
-        final double indicatorVerticalPadding = destinationPadding.top;
-        indicatorOffset = Offset(
-          widget.minWidth / 2 + indicatorHorizontalPadding,
-          indicatorVerticalPadding + indicatorVerticalOffset,
-        );
-        if (widget.minWidth < _NavigationRailDefaultsM2(context).minWidth!) {
-          indicatorOffset = Offset(
-            widget.minWidth / 2 + _horizontalDestinationSpacingM3,
-            indicatorVerticalPadding + indicatorVerticalOffset,
-          );
-        }
-        content = Container(
-          constraints: BoxConstraints(
-            minWidth: widget.minWidth,
-            minHeight: minHeight,
-          ),
-          padding: widget.padding ??
-              const EdgeInsets.symmetric(
-                horizontal: _horizontalDestinationPadding,
-              ),
-          child: ClipRect(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                topSpacing,
-                // _AddIndicator is only shown on selected menu items.
-                _AddIndicator(
-                  addIndicator: widget.useIndicator,
-                  indicatorColor: widget.indicatorColor,
-                  indicatorShape: widget.indicatorShape,
-                  isCircular: false,
-                  indicatorAnimation: widget.destinationAnimation,
-                  child: Row(
-                    children: [
-                      themedIcon,
-                      labelSpacing,
-                      Align(
-                        alignment: Alignment.topCenter,
-                        heightFactor: appearingAnimationValue,
-                        widthFactor: 1.0,
-                        child: FadeTransition(
-                          alwaysIncludeSemantics: true,
-                          opacity: labelFadeAnimation,
-                          child: styledLabel,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                bottomSpacing,
-              ],
-            ),
-          ),
-        );
-      case NavigationRailLabelType.all:
-        final double minHeight = material3 ? 0 : widget.minWidth;
-        final Widget topSpacing = SizedBox(
-          height: material3 ? 0 : _verticalDestinationPaddingWithLabel,
-        );
-        final Widget labelSpacing =
-            SizedBox(height: material3 ? _verticalIconLabelSpacingM3 : 0);
-        final Widget bottomSpacing = SizedBox(
-          height: material3
-              ? _verticalDestinationSpacingM3
-              : _verticalDestinationPaddingWithLabel,
-        );
-        final double indicatorHorizontalPadding =
-            (destinationPadding.left / 2) - (destinationPadding.right / 2);
-        final double indicatorVerticalPadding = destinationPadding.top;
-        indicatorOffset = Offset(
-          widget.minWidth / 2 + indicatorHorizontalPadding,
-          indicatorVerticalPadding + indicatorVerticalOffset,
-        );
-        if (widget.minWidth < _NavigationRailDefaultsM2(context).minWidth!) {
-          indicatorOffset = Offset(
-            widget.minWidth / 2 + _horizontalDestinationSpacingM3,
-            indicatorVerticalPadding + indicatorVerticalOffset,
-          );
-        }
-        content = Container(
-          constraints: BoxConstraints(
-            minWidth: widget.minWidth,
-            minHeight: minHeight,
-          ),
-          padding: widget.padding ??
-              const EdgeInsets.symmetric(
-                horizontal: _horizontalDestinationPadding,
-              ),
-          child: Column(
-            children: <Widget>[
-              topSpacing,
-              // _AddIndicator is only shown on selected menu items.
-              _AddIndicator(
-                addIndicator: widget.useIndicator,
-                indicatorColor: widget.indicatorColor,
-                indicatorShape: widget.indicatorShape,
-                isCircular: false,
-                indicatorAnimation: widget.destinationAnimation,
-                child: Row(
-                  children: [
-                    themedIcon,
-                    labelSpacing,
-                    styledLabel,
-                  ],
-                ),
-              ),
-              bottomSpacing,
-            ],
-          ),
-        );
-    }
-
-    final ColorScheme colors = Theme.of(context).colorScheme;
-    final bool primaryColorAlphaModified = colors.primary.alpha < 255.0;
-    final Color effectiveSplashColor = primaryColorAlphaModified
-        ? colors.primary
-        : colors.primary.withOpacity(0.12);
-    final Color effectiveHoverColor = primaryColorAlphaModified
-        ? colors.primary
-        : colors.primary.withOpacity(0.04);
-
-    return Semantics(
-      container: true,
-      selected: widget.selected,
-      child: GestureDetector(
-        onTap: widget.disabled ? null : widget.onTap,
-        child: Stack(
-          children: <Widget>[
-            Material(
-              type: MaterialType.transparency,
-              child: _IndicatorInkWell(
-                borderRadius:
-                    BorderRadius.all(Radius.circular(widget.minWidth / 2.0)),
-                customBorder: widget.indicatorShape,
-                splashColor: effectiveSplashColor,
-                hoverColor: effectiveHoverColor,
-                useMaterial3: material3,
-                indicatorOffset: indicatorOffset,
-                applyXOffset: applyXOffset,
-                textDirection: textDirection,
-                child: content,
-              ),
-            ),
-            Semantics(
-              label: widget.indexLabel,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _IndicatorInkWell extends InkResponse {
-  const _IndicatorInkWell({
-    required this.useMaterial3,
-    required this.indicatorOffset,
-    required this.applyXOffset,
-    required this.textDirection,
-    super.child,
-    super.onTap,
-    ShapeBorder? customBorder,
-    BorderRadius? borderRadius,
-    super.splashColor,
-    super.hoverColor,
-  }) : super(
-          containedInkWell: true,
-          highlightShape: BoxShape.rectangle,
-          borderRadius: useMaterial3 ? null : borderRadius,
-          customBorder: useMaterial3 ? customBorder : null,
-        );
-
-  final bool useMaterial3;
-
-  // The offset used to position Ink highlight.
-  final Offset indicatorOffset;
-
-  // Whether the horizontal offset from indicatorOffset should be used to position Ink highlight.
-  // If true, Ink highlight uses the indicator horizontal offset. If false, Ink highlight is centered horizontally.
-  final bool applyXOffset;
-
-  // The text direction used to adjust the indicator horizontal offset.
-  final TextDirection textDirection;
-
-  @override
-  RectCallback? getRectCallback(RenderBox referenceBox) {
-    if (useMaterial3) {
-      final double boxWidth = referenceBox.size.width;
-      double indicatorHorizontalCenter =
-          applyXOffset ? indicatorOffset.dx : boxWidth / 2;
-      if (textDirection == TextDirection.rtl) {
-        indicatorHorizontalCenter = boxWidth - indicatorHorizontalCenter;
-      }
-      return () {
-        return Rect.fromLTWH(
-          indicatorHorizontalCenter - (_kCircularIndicatorDiameter / 2),
-          indicatorOffset.dy,
-          _kCircularIndicatorDiameter,
-          _kIndicatorHeight,
-        );
-      };
-    }
-    return null;
-  }
-}
-
-/// When [addIndicator] is `true`, puts [child] center aligned in a [Stack] with
-/// a [NavigationIndicator] behind it, otherwise returns [child].
-///
-/// When [isCircular] is true, the indicator will be a circle, otherwise the
-/// indicator will be a stadium shape.
-class _AddIndicator extends StatelessWidget {
-  const _AddIndicator({
-    required this.addIndicator,
-    required this.isCircular,
-    required this.indicatorColor,
-    required this.indicatorShape,
-    required this.indicatorAnimation,
-    required this.child,
-  });
-
-  final bool addIndicator;
-  final bool isCircular;
-  final Color? indicatorColor;
-  final ShapeBorder? indicatorShape;
-  final Animation<double> indicatorAnimation;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!addIndicator) {
-      return child;
-    }
-    late final Widget indicator;
-    if (isCircular) {
-      indicator = NavigationIndicator(
-        animation: indicatorAnimation,
-        height: _kCircularIndicatorDiameter,
-        width: _kCircularIndicatorDiameter,
-        borderRadius: BorderRadius.circular(_kCircularIndicatorDiameter / 2),
-        color: indicatorColor,
-      );
-    } else {
-      indicator = NavigationIndicator(
-        animation: indicatorAnimation,
-        width: _kCircularIndicatorDiameter,
-        shape: indicatorShape,
-        // This is the color of the indicator around a selected navigation item.
-        color: indicatorColor,
-      );
-    }
-
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        indicator,
-        child,
-      ],
-    );
-  }
-}
-
-class _ExtendedNavigationRailAnimation extends InheritedWidget {
-  const _ExtendedNavigationRailAnimation({
-    required this.animation,
-    required super.child,
-  });
-
-  final Animation<double> animation;
-
-  @override
-  bool updateShouldNotify(_ExtendedNavigationRailAnimation old) =>
-      animation != old.animation;
-}
-
-// There don't appear to be tokens for these values, but they are
-// shown in the spec.
-const double _horizontalDestinationPadding = 8.0;
-const double _verticalDestinationPaddingNoLabel = 24.0;
-const double _verticalDestinationPaddingWithLabel = 16.0;
-const Widget _verticalSpacer = SizedBox(height: 8.0);
-const double _verticalIconLabelSpacingM3 = 4.0;
-const double _verticalDestinationSpacingM3 = 12.0;
-const double _horizontalDestinationSpacingM3 = 12.0;
-
-// Hand coded defaults based on Material Design 2.
-class _NavigationRailDefaultsM2 extends NavigationRailThemeData {
-  _NavigationRailDefaultsM2(BuildContext context)
-      : _theme = Theme.of(context),
-        _colors = Theme.of(context).colorScheme,
-        super(
-          elevation: 0,
-          groupAlignment: -1,
-          labelType: NavigationRailLabelType.none,
-          useIndicator: false,
-          minWidth: 72.0,
-          minExtendedWidth: 256,
-        );
-
-  final ThemeData _theme;
-  final ColorScheme _colors;
-
-  @override
-  Color? get backgroundColor => _colors.surface;
-
-  @override
-  TextStyle? get unselectedLabelTextStyle {
-    return _theme.textTheme.bodyLarge!
-        .copyWith(color: _colors.onSurface.withOpacity(0.64));
-  }
-
-  @override
-  TextStyle? get selectedLabelTextStyle {
-    return _theme.textTheme.bodyLarge!.copyWith(color: _colors.primary);
-  }
-
-  @override
-  IconThemeData? get unselectedIconTheme {
-    return IconThemeData(
-      size: 24.0,
-      color: _colors.onSurface,
-      opacity: 0.64,
-    );
-  }
-
-  @override
-  IconThemeData? get selectedIconTheme {
-    return IconThemeData(
-      size: 24.0,
-      color: _colors.primary,
-      opacity: 1.0,
-    );
-  }
-}
-
-// BEGIN GENERATED TOKEN PROPERTIES - NavigationRail
-
-// Do not edit by hand. The code between the "BEGIN GENERATED" and
-// "END GENERATED" comments are generated from data in the Material
-// Design token database by the script:
-//   dev/tools/gen_defaults/bin/gen_defaults.dart.
-
-class _NavigationRailDefaultsM3 extends NavigationRailThemeData {
-  _NavigationRailDefaultsM3(this.context)
-      : super(
-          elevation: 0.0,
-          groupAlignment: -1,
-          labelType: NavigationRailLabelType.none,
-          useIndicator: true,
-          minWidth: 80.0,
-          minExtendedWidth: 256,
-        );
-
-  final BuildContext context;
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-  late final TextTheme _textTheme = Theme.of(context).textTheme;
-
-  @override
-  Color? get backgroundColor => _colors.surface;
-
-  @override
-  TextStyle? get unselectedLabelTextStyle {
-    return _textTheme.labelMedium!.copyWith(color: _colors.onSurface);
-  }
-
-  @override
-  TextStyle? get selectedLabelTextStyle {
-    return _textTheme.labelMedium!.copyWith(color: _colors.onSurface);
-  }
-
-  @override
-  IconThemeData? get unselectedIconTheme {
-    return IconThemeData(
-      size: 24.0,
-      color: _colors.onSurfaceVariant,
-    );
-  }
-
-  @override
-  IconThemeData? get selectedIconTheme {
-    return IconThemeData(
-      size: 24.0,
-      color: _colors.onSecondaryContainer,
-    );
-  }
-
-  @override
-  Color? get indicatorColor => _colors.secondaryContainer;
-
-  @override
-  ShapeBorder? get indicatorShape => const StadiumBorder();
-}
-
-// END GENERATED TOKEN PROPERTIES - NavigationRail

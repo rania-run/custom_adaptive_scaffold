@@ -7,4 +7,5 @@
 export "src/adaptive_layout.dart";
 export "src/adaptive_scaffold.dart";
 export "src/breakpoints.dart";
+export "src/custom_navigation_rail.dart" show RailDestination;
 export "src/slot_layout.dart";
