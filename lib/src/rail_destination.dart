@@ -239,14 +239,15 @@ class _RailDestinationState extends State<RailDestination>
               destinationPadding.top +
               indicatorVerticalOffset,
         );
-        final Widget iconPart = Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (spacing != null) spacing,
-            SizedBox(
-              width: minWidth,
-              height: material3 ? null : minWidth,
-              child: Center(
+        final Widget iconPart = ConstrainedBox(
+          constraints: BoxConstraints.tight(
+            Size(minWidth, 44),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              if (spacing != null) spacing,
+              Center(
                 // _AddIndicator is only shown on selected menu items.
                 child: _AddIndicator(
                   addIndicator: useIndicator,
@@ -257,26 +258,22 @@ class _RailDestinationState extends State<RailDestination>
                   child: themedIcon,
                 ),
               ),
-            ),
-            if (spacing != null) spacing,
-          ],
+              if (spacing != null) spacing,
+            ],
+          ),
         );
-        if (extendedAnimation.value == 0) {
-          // This is the icon-only view of a collapsed navigation rail (i.e., no label)
-          content = Padding(
-            padding: widget.padding ?? EdgeInsets.zero,
-            child: Stack(
-              children: <Widget>[
-                iconPart,
-                // For semantics when label is not showing,
-                SizedBox.shrink(
-                  child: Visibility.maintain(
-                    visible: false,
-                    child: widget.label,
-                  ),
+        if (collapsed) {
+          content = Stack(
+            children: <Widget>[
+              iconPart,
+              // For semantics when label is not showing,
+              SizedBox.shrink(
+                child: Visibility.maintain(
+                  visible: false,
+                  child: widget.label,
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         } else {
           final Animation<double> labelFadeAnimation = extendedAnimation
@@ -476,7 +473,9 @@ class _RailDestinationState extends State<RailDestination>
       child: Material(
         type: MaterialType.transparency,
         child: Container(
-          margin: widget.margin,
+          margin: EdgeInsets.symmetric(
+            horizontal: paddingAndMarginWidth / 2,
+          ),
           child: Stack(
             children: <Widget>[
               // This is the splash overlay when hovering on an item
@@ -587,6 +586,7 @@ class _AddIndicator extends StatelessWidget {
       return child;
     }
     late final Widget indicator;
+
     if (isCircular) {
       indicator = NavigationIndicator(
         animation: indicatorAnimation,
