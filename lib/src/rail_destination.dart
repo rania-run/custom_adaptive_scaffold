@@ -144,6 +144,11 @@ class _RailDestinationState extends State<RailDestination>
       "[NavigationRail.indicatorColor] does not have an effect when [NavigationRail.useIndicator] is false",
     );
 
+    final Animation<double> extendedAnimation =
+        widget.extendedTransitionAnimation ?? _extendedAnimation;
+
+    final bool collapsed = extendedAnimation.value == 0;
+
     final TextDirection textDirection = Directionality.of(context);
     final bool material3 = theme.useMaterial3;
     final EdgeInsets destinationPadding =
@@ -151,16 +156,19 @@ class _RailDestinationState extends State<RailDestination>
     Offset indicatorOffset;
     bool applyXOffset = false;
 
+    final double paddingAndMarginWidth =
+        (widget.padding ?? EdgeInsets.zero).horizontal +
+            (widget.margin ?? EdgeInsets.zero).horizontal;
+
     final double minWidth = (widget.minWidth ??
             navigationRailTheme.minWidth ??
             defaults.minWidth!) -
-        (widget.padding ?? EdgeInsets.zero).horizontal -
-        (widget.margin ?? EdgeInsets.zero).horizontal;
+        (collapsed ? paddingAndMarginWidth : 0);
+
     final double minExtendedWidth = (widget.minExtendedWidth ??
             navigationRailTheme.minExtendedWidth ??
             defaults.minExtendedWidth!) -
-        (widget.padding ?? EdgeInsets.zero).horizontal -
-        (widget.margin ?? EdgeInsets.zero).horizontal;
+        paddingAndMarginWidth;
 
     final bool selected = widget.selected ?? false;
 
@@ -208,9 +216,6 @@ class _RailDestinationState extends State<RailDestination>
           : labelTextStyle,
       child: widget.label,
     );
-
-    final Animation<double> extendedAnimation =
-        widget.extendedTransitionAnimation ?? _extendedAnimation;
 
     Widget content;
 
