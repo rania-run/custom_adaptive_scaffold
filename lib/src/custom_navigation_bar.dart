@@ -308,10 +308,20 @@ class CustomNavigationDestination extends NavigationDestination {
     final NavigationBarThemeData defaults = _defaultsFor(context);
     final Animation<double> animation = info.selectedAnimation;
 
+    final Color indicatorColor = info.indicatorColor ??
+        navigationBarTheme.indicatorColor ??
+        defaults.indicatorColor!;
+    final ShapeBorder indicatorShape = info.indicatorShape ??
+        navigationBarTheme.indicatorShape ??
+        defaults.indicatorShape!;
+
     return _NavigationDestinationBuilder(
       label: label,
       tooltip: tooltip,
       enabled: enabled,
+      animation: animation,
+      color: indicatorColor,
+      shape: indicatorShape,
       buildIcon: (BuildContext context) {
         final IconThemeData selectedIconTheme =
             navigationBarTheme.iconTheme?.resolve(selectedState) ??
@@ -332,27 +342,13 @@ class CustomNavigationDestination extends NavigationDestination {
           child: icon,
         );
 
-        return Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            NavigationIndicator(
-              animation: animation,
-              color: info.indicatorColor ??
-                  navigationBarTheme.indicatorColor ??
-                  defaults.indicatorColor!,
-              shape: info.indicatorShape ??
-                  navigationBarTheme.indicatorShape ??
-                  defaults.indicatorShape!,
-            ),
-            _StatusTransitionWidgetBuilder(
-              animation: animation,
-              builder: (BuildContext context, Widget? child) {
-                return animation.isForwardOrCompleted
-                    ? selectedIconWidget
-                    : unselectedIconWidget;
-              },
-            ),
-          ],
+        return _StatusTransitionWidgetBuilder(
+          animation: animation,
+          builder: (BuildContext context, Widget? child) {
+            return animation.isForwardOrCompleted
+                ? selectedIconWidget
+                : unselectedIconWidget;
+          },
         );
       },
       buildLabel: (BuildContext context) {
@@ -366,11 +362,11 @@ class CustomNavigationDestination extends NavigationDestination {
             navigationBarTheme.labelTextStyle?.resolve(disabledState) ??
                 defaults.labelTextStyle!.resolve(disabledState);
 
-        final TextStyle? textStyle = enabled
+        final TextStyle? textStyle = (enabled
             ? animation.isForwardOrCompleted
                 ? effectiveSelectedLabelTextStyle
                 : effectiveUnselectedLabelTextStyle
-            : effectiveDisabledLabelTextStyle;
+            : effectiveDisabledLabelTextStyle);
 
         return Padding(
           padding: const EdgeInsets.only(top: 4),
@@ -406,6 +402,9 @@ class _NavigationDestinationBuilder extends StatefulWidget {
     required this.buildIcon,
     required this.buildLabel,
     required this.label,
+    required this.animation,
+    this.color,
+    this.shape,
     this.tooltip,
     this.enabled = true,
   });
@@ -451,6 +450,10 @@ class _NavigationDestinationBuilder extends StatefulWidget {
   /// Defaults to true.
   final bool enabled;
 
+  final Animation<double> animation;
+  final Color? color;
+  final ShapeBorder? shape;
+
   @override
   State<_NavigationDestinationBuilder> createState() =>
       _NavigationDestinationBuilderState();
@@ -479,14 +482,25 @@ class _NavigationDestinationBuilderState
               defaults.indicatorShape,
           overlayColor: info.overlayColor ?? navigationBarTheme.overlayColor,
           onTap: widget.enabled ? info.onTap : null,
-          child: Row(
+          child: Stack(
+            alignment: Alignment.center,
             children: <Widget>[
-              Expanded(
-                child: _NavigationBarDestinationLayout(
-                  icon: widget.buildIcon(context),
-                  iconKey: iconKey,
-                  label: widget.buildLabel(context),
-                ),
+              NavigationIndicator(
+                animation: widget.animation,
+                color: widget.color,
+                shape: widget.shape,
+                height: double.infinity,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: _NavigationBarDestinationLayout(
+                      icon: widget.buildIcon(context),
+                      iconKey: iconKey,
+                      label: widget.buildLabel(context),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
