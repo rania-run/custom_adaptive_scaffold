@@ -57,13 +57,23 @@ class _RailDestinationState extends State<RailDestination>
   late Animation<double> _destinationAnimation;
   late AnimationController _extendedController;
   late CurvedAnimation _extendedAnimation;
+  late bool extended;
 
   @override
   void initState() {
     super.initState();
 
+    extended = widget.extended;
+
     _initControllers();
     _setPositionAnimation();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    extended = mediumIsActive(context);
+    _extendedController.animateTo(extended ? 1.0 : 0.0);
   }
 
   @override
@@ -89,12 +99,13 @@ class _RailDestinationState extends State<RailDestination>
     _extendedController = AnimationController(
       duration: kThemeAnimationDuration,
       vsync: this,
-      value: widget.extended ? 1.0 : 0.0,
     );
+
     _extendedAnimation = CurvedAnimation(
       parent: _extendedController,
       curve: Curves.easeInOut,
     );
+
     _extendedController.addListener(() {
       setState(() {});
     });
@@ -113,6 +124,15 @@ class _RailDestinationState extends State<RailDestination>
     _positionAnimation.dispose();
     super.dispose();
   }
+
+  bool mediumLargeIsActive(BuildContext context) =>
+      const Breakpoint.mediumLarge().isActive(context);
+  bool largeIsActive(BuildContext context) =>
+      const Breakpoint.large().isActive(context);
+  bool extraLargeIsActive(BuildContext context) =>
+      const Breakpoint.extraLarge().isActive(context);
+  bool mediumIsActive(BuildContext context) =>
+      const Breakpoint.medium().isActive(context);
 
   @override
   Widget build(BuildContext context) {

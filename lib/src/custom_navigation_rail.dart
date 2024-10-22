@@ -4,6 +4,7 @@
 
 import "dart:ui";
 
+import "package:custom_adaptive_scaffold/custom_adaptive_scaffold.dart";
 import "package:flutter/material.dart";
 
 part "rail_destination.dart";
