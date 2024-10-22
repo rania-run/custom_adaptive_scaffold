@@ -667,6 +667,9 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 labelType: navRailTheme.labelType,
                 groupAlignment: widget.groupAlignment,
                 padding: widget.padding,
+                navigationDestinationMargin: widget.navigationDestinationMargin,
+                navigationDestinationPadding:
+                    widget.navigationDestinationPadding,
               ),
             ),
             widget.largeBreakpoint: SlotLayout.from(
