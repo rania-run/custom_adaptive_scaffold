@@ -72,7 +72,7 @@ class _RailDestinationState extends State<RailDestination>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    extended = mediumIsActive(context);
+    extended = !mediumIsActive(context);
     _extendedController.animateTo(extended ? 1.0 : 0.0);
   }
 
@@ -121,7 +121,10 @@ class _RailDestinationState extends State<RailDestination>
 
   @override
   void dispose() {
+    _extendedAnimation.dispose();
+    _extendedController.dispose();
     _positionAnimation.dispose();
+
     super.dispose();
   }
 
