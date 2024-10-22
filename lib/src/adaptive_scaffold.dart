@@ -6,6 +6,7 @@ import "package:flutter/material.dart";
 
 import "adaptive_layout.dart";
 import "breakpoints.dart";
+import "custom_navigation_bar.dart";
 import "custom_navigation_rail.dart";
 import "slot_layout.dart";
 
@@ -438,7 +439,7 @@ class AdaptiveScaffold extends StatefulWidget {
           ),
           child: MediaQuery(
             data: MediaQuery.of(context).removePadding(removeTop: true),
-            child: NavigationBar(
+            child: CustomNavigationBar(
               selectedIndex: currentIndex ?? 0,
               destinations: destinations,
               onDestinationSelected: onDestinationSelected,

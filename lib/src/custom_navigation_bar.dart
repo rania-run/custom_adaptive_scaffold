@@ -12,6 +12,266 @@ const double _kMaxLabelTextScaleFactor = 1.3;
 // late BuildContext context;
 // late bool _isDrawerOpen;
 
+/// Material 3 Navigation Bar component.
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=DVGYddFaLv0}
+///
+/// Navigation bars offer a persistent and convenient way to switch between
+/// primary destinations in an app.
+///
+/// This widget does not adjust its size with the [ThemeData.visualDensity].
+///
+/// The [MediaQueryData.textScaler] does not adjust the size of this widget but
+/// rather the size of the [Tooltip]s displayed on long presses of the
+/// destinations.
+///
+/// The style for the icons and text are not affected by parent
+/// [DefaultTextStyle]s or [IconTheme]s but rather controlled by parameters or
+/// the [NavigationBarThemeData].
+///
+/// This widget holds a collection of destinations (usually
+/// [CustomNavigationDestination]s).
+///
+/// {@tool dartpad}
+/// This example shows a [CustomNavigationBar] as it is used within a [Scaffold]
+/// widget. The [CustomNavigationBar] has three [CustomNavigationDestination] widgets and
+/// the initial [selectedIndex] is set to index 0. The [onDestinationSelected]
+/// callback changes the selected item's index and displays a corresponding
+/// widget in the body of the [Scaffold].
+///
+/// ** See code in examples/api/lib/material/navigation_bar/navigation_bar.0.dart **
+/// {@end-tool}
+///
+/// {@tool dartpad}
+/// This example showcases [CustomNavigationBar] label behaviors. When tapping on one
+/// of the label behavior options, the [labelBehavior] of the [CustomNavigationBar]
+/// will be updated.
+///
+/// ** See code in examples/api/lib/material/navigation_bar/navigation_bar.1.dart **
+/// {@end-tool}
+///
+/// {@tool dartpad}
+/// This example shows a [CustomNavigationBar] within a main [Scaffold]
+/// widget that's used to control the visibility of destination pages.
+/// Each destination has its own scaffold and a nested navigator that
+/// provides local navigation. The example's [CustomNavigationBar] has four
+/// [CustomNavigationDestination] widgets with different color schemes. Its
+/// [onDestinationSelected] callback changes the selected
+/// destination's index and displays a corresponding page with its own
+/// local navigator and scaffold - all within the body of the main
+/// scaffold. The destination pages are organized in a [Stack] and
+/// switching destinations fades out the current page and
+/// fades in the new one. Destinations that aren't visible or animating
+/// are kept [Offstage].
+///
+/// ** See code in examples/api/lib/material/navigation_bar/navigation_bar.2.dart **
+/// {@end-tool}
+/// See also:
+///
+///  * [CustomNavigationDestination]
+///  * [BottomNavigationBar]
+///  * <https://api.flutter.dev/flutter/material/NavigationDestination-class.html>
+///  * <https://m3.material.io/components/navigation-bar>
+class CustomNavigationBar extends StatelessWidget {
+  /// Creates a Material 3 Navigation Bar component.
+  ///
+  /// The value of [destinations] must be a list of two or more
+  /// [CustomNavigationDestination] values.
+  // TODO(goderbauer): This class cannot be const constructed, https://github.com/dart-lang/linter/issues/3366.
+  // ignore: prefer_const_constructors_in_immutables
+  CustomNavigationBar({
+    required this.destinations,
+    super.key,
+    this.animationDuration,
+    this.selectedIndex = 0,
+    this.onDestinationSelected,
+    this.backgroundColor,
+    this.elevation,
+    this.shadowColor,
+    this.surfaceTintColor,
+    this.indicatorColor,
+    this.indicatorShape,
+    this.height,
+    this.labelBehavior,
+    this.overlayColor,
+  })  : assert(destinations.length >= 2),
+        assert(0 <= selectedIndex && selectedIndex < destinations.length);
+
+  /// Determines the transition time for each destination as it goes between
+  /// selected and unselected.
+  final Duration? animationDuration;
+
+  /// Determines which one of the [destinations] is currently selected.
+  ///
+  /// When this is updated, the destination (from [destinations]) at
+  /// [selectedIndex] goes from unselected to selected.
+  final int selectedIndex;
+
+  /// The list of destinations (usually [CustomNavigationDestination]s) in this
+  /// [CustomNavigationBar].
+  ///
+  /// When [selectedIndex] is updated, the destination from this list at
+  /// [selectedIndex] will animate from 0 (unselected) to 1.0 (selected). When
+  /// the animation is increasing or completed, the destination is considered
+  /// selected, when the animation is decreasing or dismissed, the destination
+  /// is considered unselected.
+  final List<Widget> destinations;
+
+  /// Called when one of the [destinations] is selected.
+  ///
+  /// This callback usually updates the int passed to [selectedIndex].
+  ///
+  /// Upon updating [selectedIndex], the [CustomNavigationBar] will be rebuilt.
+  final ValueChanged<int>? onDestinationSelected;
+
+  /// The color of the [CustomNavigationBar] itself.
+  ///
+  /// If null, [NavigationBarThemeData.backgroundColor] is used. If that
+  /// is also null, then if [ThemeData.useMaterial3] is true, the value is
+  /// [ColorScheme.surfaceContainer]. If that is false, the default blends [ColorScheme.surface]
+  /// and [ColorScheme.onSurface] using an [ElevationOverlay].
+  final Color? backgroundColor;
+
+  /// The elevation of the [CustomNavigationBar] itself.
+  ///
+  /// If null, [NavigationBarThemeData.elevation] is used. If that
+  /// is also null, then if [ThemeData.useMaterial3] is true then it will
+  /// be 3.0 otherwise 0.0.
+  final double? elevation;
+
+  /// The color used for the drop shadow to indicate elevation.
+  ///
+  /// If null, [NavigationBarThemeData.shadowColor] is used. If that
+  /// is also null, the default value is [Colors.transparent] which
+  /// indicates that no drop shadow will be displayed.
+  ///
+  /// See [Material.shadowColor] for more details on drop shadows.
+  final Color? shadowColor;
+
+  /// The color used as an overlay on [backgroundColor] to indicate elevation.
+  ///
+  /// This is not recommended for use. [Material 3 spec](https://m3.material.io/styles/color/the-color-system/color-roles)
+  /// introduced a set of tone-based surfaces and surface containers in its [ColorScheme],
+  /// which provide more flexibility. The intention is to eventually remove surface tint color from
+  /// the framework.
+  ///
+  /// If null, [NavigationBarThemeData.surfaceTintColor] is used. If that
+  /// is also null, the default value is [Colors.transparent].
+  ///
+  /// See [Material.surfaceTintColor] for more details on how this
+  /// overlay is applied.
+  final Color? surfaceTintColor;
+
+  /// The color of the [indicatorShape] when this destination is selected.
+  ///
+  /// If null, [NavigationBarThemeData.indicatorColor] is used. If that
+  /// is also null and [ThemeData.useMaterial3] is true, [ColorScheme.secondaryContainer]
+  /// is used. Otherwise, [ColorScheme.secondary] with an opacity of 0.24 is used.
+  final Color? indicatorColor;
+
+  /// The shape of the selected indicator.
+  ///
+  /// If null, [NavigationBarThemeData.indicatorShape] is used. If that
+  /// is also null and [ThemeData.useMaterial3] is true, [StadiumBorder] is used.
+  /// Otherwise, [RoundedRectangleBorder] with a circular border radius of 16 is used.
+  final ShapeBorder? indicatorShape;
+
+  /// The height of the [CustomNavigationBar] itself.
+  ///
+  /// If this is used in [Scaffold.bottomNavigationBar] and the scaffold is
+  /// full-screen, the safe area padding is also added to the height
+  /// automatically.
+  ///
+  /// The height does not adjust with [ThemeData.visualDensity] or
+  /// [MediaQueryData.textScaler] as this component loses usability at
+  /// larger and smaller sizes due to the truncating of labels or smaller tap
+  /// targets.
+  ///
+  /// If null, [NavigationBarThemeData.height] is used. If that
+  /// is also null, the default is 80.
+  final double? height;
+
+  /// Defines how the [destinations]' labels will be laid out and when they'll
+  /// be displayed.
+  ///
+  /// Can be used to show all labels, show only the selected label, or hide all
+  /// labels.
+  ///
+  /// If null, [NavigationBarThemeData.labelBehavior] is used. If that
+  /// is also null, the default is
+  /// [NavigationDestinationLabelBehavior.alwaysShow].
+  final NavigationDestinationLabelBehavior? labelBehavior;
+
+  /// The highlight color that's typically used to indicate that
+  /// the [CustomNavigationDestination] is focused, hovered, or pressed.
+  final WidgetStateProperty<Color?>? overlayColor;
+
+  VoidCallback _handleTap(int index) {
+    return onDestinationSelected != null
+        ? () => onDestinationSelected!(index)
+        : () {};
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final NavigationBarThemeData defaults = _defaultsFor(context);
+
+    final NavigationBarThemeData navigationBarTheme =
+        NavigationBarTheme.of(context);
+    final double effectiveHeight =
+        height ?? navigationBarTheme.height ?? defaults.height!;
+    final NavigationDestinationLabelBehavior effectiveLabelBehavior =
+        labelBehavior ??
+            navigationBarTheme.labelBehavior ??
+            defaults.labelBehavior!;
+
+    return Material(
+      color: backgroundColor ??
+          navigationBarTheme.backgroundColor ??
+          defaults.backgroundColor!,
+      elevation:
+          elevation ?? navigationBarTheme.elevation ?? defaults.elevation!,
+      shadowColor:
+          shadowColor ?? navigationBarTheme.shadowColor ?? defaults.shadowColor,
+      surfaceTintColor: surfaceTintColor ??
+          navigationBarTheme.surfaceTintColor ??
+          defaults.surfaceTintColor,
+      child: SafeArea(
+        child: SizedBox(
+          height: effectiveHeight,
+          child: Row(
+            children: <Widget>[
+              for (int i = 0; i < destinations.length; i++)
+                Expanded(
+                  child: _SelectableAnimatedBuilder(
+                    duration:
+                        animationDuration ?? const Duration(milliseconds: 500),
+                    isSelected: i == selectedIndex,
+                    builder:
+                        (BuildContext context, Animation<double> animation) {
+                      return _NavigationDestinationInfo(
+                        index: i,
+                        selectedIndex: selectedIndex,
+                        totalNumberOfDestinations: destinations.length,
+                        selectedAnimation: animation,
+                        labelBehavior: effectiveLabelBehavior,
+                        indicatorColor: indicatorColor,
+                        indicatorShape: indicatorShape,
+                        overlayColor: overlayColor,
+                        onTap: _handleTap(i),
+                        child: destinations[i],
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// A Material 3 [NavigationBar] destination.
 ///
 /// Displays a label below an icon. Use with [NavigationBar.destinations].
