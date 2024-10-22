@@ -57,23 +57,13 @@ class _RailDestinationState extends State<RailDestination>
   late Animation<double> _destinationAnimation;
   late AnimationController _extendedController;
   late CurvedAnimation _extendedAnimation;
-  late bool extended;
 
   @override
   void initState() {
     super.initState();
 
-    extended = widget.extended;
-
     _initControllers();
     _setPositionAnimation();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    extended = !mediumIsActive(context);
-    _extendedController.animateTo(extended ? 1.0 : 0.0);
   }
 
   @override
@@ -99,6 +89,7 @@ class _RailDestinationState extends State<RailDestination>
     _extendedController = AnimationController(
       duration: kThemeAnimationDuration,
       vsync: this,
+      value: widget.extended ? 1.0 : 0.0,
     );
 
     _extendedAnimation = CurvedAnimation(
