@@ -496,9 +496,8 @@ class _RailDestinationState extends State<RailDestination>
       child: Material(
         type: MaterialType.transparency,
         child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: paddingAndMarginWidth / 2,
-          ),
+          padding: widget.padding,
+          margin: widget.margin,
           child: Stack(
             children: <Widget>[
               // This is the splash overlay when hovering on an item
