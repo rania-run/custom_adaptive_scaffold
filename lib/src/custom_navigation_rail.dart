@@ -59,7 +59,7 @@ part "rail_destination.dart";
 ///     out horizontally.
 ///  * <https://material.io/components/navigation-rail/>
 ///  * <https://m3.material.io/components/navigation-rail>
-class CustomNavigationRail extends StatefulWidget {
+class CustomNavigationRail extends StatefulWidget implements NavigationRail {
   /// Creates a Material Design navigation rail.
   ///
   /// The value of [destinations] must be a list of two or more
@@ -128,6 +128,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// The default value is [NavigationRailThemeData.backgroundColor]. If
   /// [NavigationRailThemeData.backgroundColor] is null, then the default value
   /// is based on [ColorScheme.surface] of [ThemeData.colorScheme].
+  @override
   final Color? backgroundColor;
 
   /// Indicates that the [CustomNavigationRail] should be in the extended state.
@@ -142,6 +143,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// must be set to [NavigationRailLabelType.none].
   ///
   /// The default value is false.
+  @override
   final bool extended;
 
   /// The leading widget in the rail that is placed above the destinations.
@@ -153,6 +155,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// such as a logo.
   ///
   /// The default value is null.
+  @override
   final Widget? leading;
 
   /// The trailing widget in the rail that is placed below the destinations.
@@ -164,6 +167,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// usually only rendered when [extended] is true.
   ///
   /// The default value is null.
+  @override
   final Widget? trailing;
 
   /// Defines the appearance of the button items that are arrayed within the
@@ -171,10 +175,12 @@ class CustomNavigationRail extends StatefulWidget {
   ///
   /// The value must be a list of two or more [NavigationRailDestination]
   /// values.
+  @override
   final List<NavigationRailDestination> destinations;
 
   /// The index into [destinations] for the current selected
   /// [NavigationRailDestination] or null if no destination is selected.
+  @override
   final int? selectedIndex;
 
   /// Called when one of the [destinations] is selected.
@@ -182,6 +188,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// The stateful widget that creates the navigation rail needs to keep
   /// track of the index of the selected [NavigationRailDestination] and call
   /// `setState` to rebuild the navigation rail with the new [selectedIndex].
+  @override
   final ValueChanged<int>? onDestinationSelected;
 
   /// The rail's elevation or z-coordinate.
@@ -191,6 +198,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// the left side.
   ///
   /// The default value is 0.
+  @override
   final double? elevation;
 
   /// The vertical alignment for the group of [destinations] within the rail.
@@ -209,6 +217,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// See also:
   ///   * [Alignment.y]
   ///
+  @override
   final double? groupAlignment;
 
   /// Defines the layout and behavior of the labels for the default, unextended
@@ -224,6 +233,7 @@ class CustomNavigationRail extends StatefulWidget {
   ///
   ///   * [NavigationRailLabelType] for information on the meaning of different
   ///   types.
+  @override
   final NavigationRailLabelType? labelType;
 
   /// The [TextStyle] of a destination's label when it is unselected.
@@ -237,6 +247,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// Properties from this text style, or
   /// [NavigationRailThemeData.unselectedLabelTextStyle] if this is null, are
   /// merged into the defaults.
+  @override
   final TextStyle? unselectedLabelTextStyle;
 
   /// The [TextStyle] of a destination's label when it is selected.
@@ -251,6 +262,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// Properties from this text style,
   /// or [NavigationRailThemeData.selectedLabelTextStyle] if this is null, are
   /// merged into the defaults.
+  @override
   final TextStyle? selectedLabelTextStyle;
 
   /// The visual properties of the icon in the unselected destination.
@@ -264,6 +276,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// Properties from this icon theme, or
   /// [NavigationRailThemeData.unselectedIconTheme] if this is null, are
   /// merged into the defaults.
+  @override
   final IconThemeData? unselectedIconTheme;
 
   /// The visual properties of the icon in the selected destination.
@@ -275,6 +288,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// of the [Theme]'s [ColorScheme.primary]. Properties from this icon theme,
   /// or [NavigationRailThemeData.selectedIconTheme] if this is null, are
   /// merged into the defaults.
+  @override
   final IconThemeData? selectedIconTheme;
 
   /// The smallest possible width for the rail regardless of the destination's
@@ -286,6 +300,7 @@ class CustomNavigationRail extends StatefulWidget {
   ///
   /// To make a compact rail, set this to 56 and use
   /// [NavigationRailLabelType.none].
+  @override
   final double? minWidth;
 
   /// The final width when the animation is complete for setting [extended] to
@@ -294,6 +309,7 @@ class CustomNavigationRail extends StatefulWidget {
   /// This is only used when [extended] is set to true.
   ///
   /// The default value is 256.
+  @override
   final double? minExtendedWidth;
 
   /// If `true`, adds a rounded [NavigationIndicator] behind the selected
@@ -305,6 +321,7 @@ class CustomNavigationRail extends StatefulWidget {
   ///
   /// If `null`, defaults to [NavigationRailThemeData.useIndicator]. If that is
   /// `null`, defaults to [ThemeData.useMaterial3].
+  @override
   final bool? useIndicator;
 
   /// Overrides the default value of [CustomNavigationRail]'s selection indicator color,
@@ -312,6 +329,7 @@ class CustomNavigationRail extends StatefulWidget {
   ///
   /// If this is null, [NavigationRailThemeData.indicatorColor] is used. If
   /// that is null, defaults to [ColorScheme.secondaryContainer].
+  @override
   final Color? indicatorColor;
 
   /// Overrides the default value of [CustomNavigationRail]'s selection indicator shape,
@@ -319,6 +337,7 @@ class CustomNavigationRail extends StatefulWidget {
   ///
   /// If this is null, [NavigationRailThemeData.indicatorShape] is used. If
   /// that is null, defaults to [StadiumBorder].
+  @override
   final ShapeBorder? indicatorShape;
 
   /// Overrides the default value of [CustomNavigationRail]'s margin around the

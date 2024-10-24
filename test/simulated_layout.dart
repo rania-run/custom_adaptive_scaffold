@@ -44,17 +44,17 @@ class TestScaffold extends StatefulWidget {
 
   static const List<NavigationDestination> destinations =
       <NavigationDestination>[
-    NavigationDestination(
+    CustomNavigationDestination(
       key: Key("Inbox"),
       icon: Icon(Icons.inbox),
       label: "Inbox",
     ),
-    NavigationDestination(
+    CustomNavigationDestination(
       key: Key("Articles"),
       icon: Icon(Icons.article),
       label: "Articles",
     ),
-    NavigationDestination(
+    CustomNavigationDestination(
       key: Key("Chat"),
       icon: Icon(Icons.chat),
       label: "Chat",

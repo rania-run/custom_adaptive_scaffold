@@ -203,7 +203,7 @@ void main() {
 
       final Finder navigationRailFinder = find.descendant(
         of: primaryNavigationMedium,
-        matching: find.byType(NavigationRail),
+        matching: find.byType(CustomNavigationRail),
       );
       expect(navigationRailFinder, findsOneWidget);
 
@@ -245,7 +245,7 @@ void main() {
 
       final Finder navigationRailFinder = find.descendant(
         of: primaryNavigationMediumLarge,
-        matching: find.byType(NavigationRail),
+        matching: find.byType(CustomNavigationRail),
       );
       expect(navigationRailFinder, findsOneWidget);
 
@@ -287,7 +287,7 @@ void main() {
 
       final Finder navigationRailFinder = find.descendant(
         of: primaryNavigationLarge,
-        matching: find.byType(NavigationRail),
+        matching: find.byType(CustomNavigationRail),
       );
       expect(navigationRailFinder, findsOneWidget);
 
@@ -329,7 +329,7 @@ void main() {
 
       final Finder navigationRailFinder = find.descendant(
         of: primaryNavigationExtraLarge,
-        matching: find.byType(NavigationRail),
+        matching: find.byType(CustomNavigationRail),
       );
       expect(navigationRailFinder, findsOneWidget);
 

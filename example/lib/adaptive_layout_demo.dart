@@ -148,22 +148,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Define the list of destinations to be used within the app.
     const List<NavigationDestination> destinations = <NavigationDestination>[
-      NavigationDestination(
+      CustomNavigationDestination(
         label: "Inbox",
         icon: Icon(Icons.inbox_outlined),
         selectedIcon: Icon(Icons.inbox),
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         label: "Articles",
         icon: Icon(Icons.article_outlined),
         selectedIcon: Icon(Icons.article),
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         label: "Chat",
         icon: Icon(Icons.chat_outlined),
         selectedIcon: Icon(Icons.chat),
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         label: "Video",
         icon: Icon(Icons.video_call_outlined),
         selectedIcon: Icon(Icons.video_call),

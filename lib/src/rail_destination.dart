@@ -457,7 +457,8 @@ class _RailDestinationState extends State<RailDestination>
                 indicatorShape: indicatorShape,
                 isCircular: false,
                 indicatorAnimation: _destinationAnimation,
-                child: Row(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
                   children: [
                     themedIcon,
                     labelSpacing,

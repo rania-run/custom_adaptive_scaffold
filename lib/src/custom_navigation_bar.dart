@@ -342,14 +342,9 @@ class CustomNavigationDestination extends NavigationDestination {
           child: icon,
         );
 
-        return _StatusTransitionWidgetBuilder(
-          animation: animation,
-          builder: (BuildContext context, Widget? child) {
-            return animation.isForwardOrCompleted
-                ? selectedIconWidget
-                : unselectedIconWidget;
-          },
-        );
+        return animation.isForwardOrCompleted
+            ? selectedIconWidget
+            : unselectedIconWidget;
       },
       buildLabel: (BuildContext context) {
         final TextStyle? effectiveSelectedLabelTextStyle =
@@ -491,16 +486,19 @@ class _NavigationDestinationBuilderState
                 shape: widget.shape,
                 height: double.infinity,
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: _NavigationBarDestinationLayout(
-                      icon: widget.buildIcon(context),
-                      iconKey: iconKey,
-                      label: widget.buildLabel(context),
+              _StatusTransitionWidgetBuilder(
+                animation: widget.animation,
+                builder: (context, child) => Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: _NavigationBarDestinationLayout(
+                        icon: widget.buildIcon(context),
+                        iconKey: iconKey,
+                        label: widget.buildLabel(context),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

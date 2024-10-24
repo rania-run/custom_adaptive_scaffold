@@ -99,27 +99,27 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       },
       destinations: const <NavigationDestination>[
-        NavigationDestination(
+        CustomNavigationDestination(
           icon: Icon(Icons.inbox_outlined),
           selectedIcon: Icon(Icons.inbox),
           label: "Inbox",
         ),
-        NavigationDestination(
+        CustomNavigationDestination(
           icon: Icon(Icons.article_outlined),
           selectedIcon: Icon(Icons.article),
           label: "Articles",
         ),
-        NavigationDestination(
+        CustomNavigationDestination(
           icon: Icon(Icons.chat_outlined),
           selectedIcon: Icon(Icons.chat),
           label: "Chat",
         ),
-        NavigationDestination(
+        CustomNavigationDestination(
           icon: Icon(Icons.video_call_outlined),
           selectedIcon: Icon(Icons.video_call),
           label: "Video",
         ),
-        NavigationDestination(
+        CustomNavigationDestination(
           icon: Icon(Icons.home_outlined),
           selectedIcon: Icon(Icons.home),
           label: "Inbox",
