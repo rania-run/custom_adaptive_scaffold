@@ -8,6 +8,8 @@ export "src/adaptive_layout.dart";
 export "src/adaptive_scaffold.dart";
 export "src/breakpoints.dart";
 export "src/custom_navigation_bar.dart" show CustomNavigationDestination;
+export "src/custom_navigation_bar_theme.dart";
 export "src/custom_navigation_rail.dart"
     show RailDestination, CustomNavigationRail;
+export "src/custom_navigation_rail_theme.dart";
 export "src/slot_layout.dart";

@@ -103,8 +103,6 @@ class CustomNavigationRail extends StatefulWidget implements NavigationRail {
     this.useIndicator,
     this.indicatorColor,
     this.indicatorShape,
-    this.navigationDestinationMargin,
-    this.navigationDestinationPadding,
   })  : assert(destinations.length >= 2),
         assert(
           selectedIndex == null ||
@@ -340,14 +338,6 @@ class CustomNavigationRail extends StatefulWidget implements NavigationRail {
   @override
   final ShapeBorder? indicatorShape;
 
-  /// Overrides the default value of [CustomNavigationRail]'s margin around the
-  /// [NavigationDestination] widgets.
-  final EdgeInsetsGeometry? navigationDestinationMargin;
-
-  /// Overrides the default value of [CustomNavigationRail]'s padding around the
-  /// [NavigationDestination] widgets.
-  final EdgeInsetsGeometry? navigationDestinationPadding;
-
   /// Returns the animation that controls the [CustomNavigationRail.extended] state.
   ///
   /// This can be used to synchronize animations in the [leading] or [trailing]
@@ -482,8 +472,13 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
 
     final bool isRTLDirection = Directionality.of(context) == TextDirection.rtl;
 
-    final EdgeInsetsGeometry railDestinationMargin =
-        widget.navigationDestinationMargin ?? EdgeInsets.zero;
+    late final EdgeInsetsGeometry railDestinationMargin;
+    late final EdgeInsetsGeometry? railDestinationPadding;
+
+    if (navigationRailTheme is CustomNavigationRailThemeData) {
+      railDestinationMargin = navigationRailTheme.margin;
+      railDestinationPadding = navigationRailTheme.padding;
+    }
 
     return _ExtendedNavigationRailAnimation(
       animation: _extendedAnimation,
@@ -537,7 +532,7 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
                               labelTextStyle: widget.selectedIndex == i
                                   ? selectedLabelTextStyle
                                   : unselectedLabelTextStyle,
-                              padding: widget.navigationDestinationPadding ??
+                              padding: railDestinationPadding ??
                                   widget.destinations[i].padding ??
                                   const EdgeInsets.symmetric(
                                     horizontal: _horizontalDestinationPadding,

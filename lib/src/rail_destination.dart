@@ -18,12 +18,12 @@ class RailDestination extends StatefulWidget {
     this.onTap,
     this.indexLabel,
     this.useIndicator,
-    this.padding,
-    this.margin,
     this.indicatorColor,
     this.indicatorShape,
     this.disabled = false,
     this.extended = true,
+    this.padding,
+    this.margin,
     super.key,
   });
 
@@ -39,13 +39,13 @@ class RailDestination extends StatefulWidget {
   final TextStyle? labelTextStyle;
   final VoidCallback? onTap;
   final String? indexLabel;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
   final bool? useIndicator;
   final Color? indicatorColor;
   final ShapeBorder? indicatorShape;
   final bool disabled;
   final bool extended;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
 
   @override
   State<RailDestination> createState() => _RailDestinationState();
@@ -165,14 +165,27 @@ class _RailDestinationState extends State<RailDestination>
 
     final TextDirection textDirection = Directionality.of(context);
     final bool material3 = theme.useMaterial3;
-    final EdgeInsets destinationPadding =
-        (widget.padding ?? EdgeInsets.zero).resolve(textDirection);
+
+    late final EdgeInsets destinationPadding;
+    late final EdgeInsets destinationMargin;
+
+    if (navigationRailTheme is CustomNavigationRailThemeData) {
+      destinationPadding = (widget.padding ?? navigationRailTheme.padding)
+          .resolve(textDirection);
+      destinationMargin =
+          (widget.margin ?? navigationRailTheme.margin).resolve(textDirection);
+    } else {
+      destinationPadding =
+          (widget.padding ?? EdgeInsets.zero).resolve(textDirection);
+      destinationMargin =
+          (widget.margin ?? EdgeInsets.zero).resolve(textDirection);
+    }
+
     Offset indicatorOffset;
     bool applyXOffset = false;
 
     final double paddingAndMarginWidth =
-        (widget.padding ?? EdgeInsets.zero).horizontal +
-            (widget.margin ?? EdgeInsets.zero).horizontal;
+        destinationPadding.horizontal + destinationMargin.horizontal;
 
     final double minWidth = (widget.minWidth ??
             navigationRailTheme.minWidth ??
@@ -459,6 +472,8 @@ class _RailDestinationState extends State<RailDestination>
                 indicatorAnimation: _destinationAnimation,
                 child: Wrap(
                   alignment: WrapAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     themedIcon,
                     labelSpacing,
@@ -487,31 +502,28 @@ class _RailDestinationState extends State<RailDestination>
       selected: widget.selected,
       child: Material(
         type: MaterialType.transparency,
-        child: Container(
-          padding: widget.padding,
-          margin: widget.margin,
-          child: Stack(
-            children: <Widget>[
-              // This is the splash overlay when hovering on an item
-              _IndicatorInkWell(
-                onTap: widget.disabled ? null : widget.onTap,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(minWidth / 2.0),
-                ),
-                customBorder: indicatorShape,
-                splashColor: effectiveSplashColor,
-                hoverColor: effectiveHoverColor,
-                useMaterial3: material3,
-                indicatorOffset: indicatorOffset,
-                applyXOffset: applyXOffset,
-                textDirection: textDirection,
-                child: content,
+        child: Stack(
+          children: <Widget>[
+            /// This is the splash overlay when hovering over a
+            /// [CustomNavigationDestination] in a [NavigationRail].
+            _IndicatorInkWell(
+              onTap: widget.disabled ? null : widget.onTap,
+              borderRadius: BorderRadius.all(
+                Radius.circular(minWidth / 2.0),
               ),
-              Semantics(
-                label: widget.indexLabel,
-              ),
-            ],
-          ),
+              customBorder: indicatorShape,
+              splashColor: effectiveSplashColor,
+              hoverColor: effectiveHoverColor,
+              useMaterial3: material3,
+              indicatorOffset: indicatorOffset,
+              applyXOffset: applyXOffset,
+              textDirection: textDirection,
+              child: content,
+            ),
+            Semantics(
+              label: widget.indexLabel,
+            ),
+          ],
         ),
       ),
     );

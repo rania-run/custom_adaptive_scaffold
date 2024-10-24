@@ -2,13 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import "package:custom_adaptive_scaffold/custom_adaptive_scaffold.dart";
 import "package:flutter/material.dart";
 
-import "adaptive_layout.dart";
-import "breakpoints.dart";
 import "custom_navigation_bar.dart";
-import "custom_navigation_rail.dart";
-import "slot_layout.dart";
 
 /// Spacing value of the compact breakpoint according to
 /// the material 3 design spec.
@@ -125,8 +122,6 @@ class AdaptiveScaffold extends StatefulWidget {
     this.navigationRailDestinationBuilder,
     this.groupAlignment,
     this.padding,
-    this.navigationDestinationMargin,
-    this.navigationDestinationPadding,
   }) : assert(
           destinations.length >= 2,
           "At least two destinations are required",
@@ -321,9 +316,6 @@ class AdaptiveScaffold extends StatefulWidget {
   /// Applies a [Padding] around the [NavigationRail].
   final EdgeInsetsGeometry? padding;
 
-  final EdgeInsetsGeometry? navigationDestinationMargin;
-  final EdgeInsetsGeometry? navigationDestinationPadding;
-
   /// Callback function for when the index of a [NavigationRail] changes.
   static WidgetBuilder emptyBuilder = (_) => const SizedBox();
 
@@ -364,8 +356,6 @@ class AdaptiveScaffold extends StatefulWidget {
     TextStyle? unSelectedLabelTextStyle,
     NavigationRailLabelType? labelType = NavigationRailLabelType.none,
     EdgeInsetsGeometry? padding,
-    EdgeInsetsGeometry? navigationDestinationMargin,
-    EdgeInsetsGeometry? navigationDestinationPadding,
   }) {
     if (extended && width == 72) {
       width = 192;
@@ -398,10 +388,6 @@ class AdaptiveScaffold extends StatefulWidget {
                         selectedLabelTextStyle: selectedLabelTextStyle,
                         unselectedLabelTextStyle: unSelectedLabelTextStyle,
                         destinations: destinations,
-                        navigationDestinationMargin:
-                            navigationDestinationMargin,
-                        navigationDestinationPadding:
-                            navigationDestinationPadding,
                       ),
                     ),
                   ),
@@ -645,9 +631,6 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 labelType: navRailTheme.labelType,
                 groupAlignment: widget.groupAlignment,
                 padding: widget.padding,
-                navigationDestinationMargin: widget.navigationDestinationMargin,
-                navigationDestinationPadding:
-                    widget.navigationDestinationPadding,
               ),
             ),
             widget.mediumLargeBreakpoint: SlotLayout.from(
@@ -668,9 +651,6 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 labelType: navRailTheme.labelType,
                 groupAlignment: widget.groupAlignment,
                 padding: widget.padding,
-                navigationDestinationMargin: widget.navigationDestinationMargin,
-                navigationDestinationPadding:
-                    widget.navigationDestinationPadding,
               ),
             ),
             widget.largeBreakpoint: SlotLayout.from(
@@ -694,9 +674,6 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 padding: widget.padding,
-                navigationDestinationMargin: widget.navigationDestinationMargin,
-                navigationDestinationPadding:
-                    widget.navigationDestinationPadding,
               ),
             ),
             widget.extraLargeBreakpoint: SlotLayout.from(
@@ -720,9 +697,6 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 selectedLabelTextStyle: navRailTheme.selectedLabelTextStyle,
                 unSelectedLabelTextStyle: navRailTheme.unselectedLabelTextStyle,
                 padding: widget.padding,
-                navigationDestinationMargin: widget.navigationDestinationMargin,
-                navigationDestinationPadding:
-                    widget.navigationDestinationPadding,
               ),
             ),
           },

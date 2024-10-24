@@ -4,6 +4,8 @@
 
 import "package:flutter/material.dart";
 
+import "custom_navigation_bar_theme.dart";
+
 const double _kIndicatorHeight = 32;
 const double _kIndicatorWidth = 64;
 const double _kMaxLabelTextScaleFactor = 1.3;
@@ -315,66 +317,81 @@ class CustomNavigationDestination extends NavigationDestination {
         navigationBarTheme.indicatorShape ??
         defaults.indicatorShape!;
 
-    return _NavigationDestinationBuilder(
-      label: label,
-      tooltip: tooltip,
-      enabled: enabled,
-      animation: animation,
-      color: indicatorColor,
-      shape: indicatorShape,
-      buildIcon: (BuildContext context) {
-        final IconThemeData selectedIconTheme =
-            navigationBarTheme.iconTheme?.resolve(selectedState) ??
-                defaults.iconTheme!.resolve(selectedState)!;
-        final IconThemeData unselectedIconTheme =
-            navigationBarTheme.iconTheme?.resolve(unselectedState) ??
-                defaults.iconTheme!.resolve(unselectedState)!;
-        final IconThemeData disabledIconTheme =
-            navigationBarTheme.iconTheme?.resolve(disabledState) ??
-                defaults.iconTheme!.resolve(disabledState)!;
+    late final EdgeInsetsGeometry margin;
+    late final EdgeInsetsGeometry padding;
 
-        final Widget selectedIconWidget = IconTheme.merge(
-          data: enabled ? selectedIconTheme : disabledIconTheme,
-          child: selectedIcon ?? icon,
-        );
-        final Widget unselectedIconWidget = IconTheme.merge(
-          data: enabled ? unselectedIconTheme : disabledIconTheme,
-          child: icon,
-        );
+    if (navigationBarTheme is CustomNavigationBarThemeData) {
+      margin = navigationBarTheme.margin;
+      padding = navigationBarTheme.padding;
+    } else {
+      margin = EdgeInsets.zero;
+      padding = EdgeInsets.zero;
+    }
 
-        return animation.isForwardOrCompleted
-            ? selectedIconWidget
-            : unselectedIconWidget;
-      },
-      buildLabel: (BuildContext context) {
-        final TextStyle? effectiveSelectedLabelTextStyle =
-            navigationBarTheme.labelTextStyle?.resolve(selectedState) ??
-                defaults.labelTextStyle!.resolve(selectedState);
-        final TextStyle? effectiveUnselectedLabelTextStyle =
-            navigationBarTheme.labelTextStyle?.resolve(unselectedState) ??
-                defaults.labelTextStyle!.resolve(unselectedState);
-        final TextStyle? effectiveDisabledLabelTextStyle =
-            navigationBarTheme.labelTextStyle?.resolve(disabledState) ??
-                defaults.labelTextStyle!.resolve(disabledState);
+    return Container(
+      margin: margin,
+      child: _NavigationDestinationBuilder(
+        label: label,
+        tooltip: tooltip,
+        enabled: enabled,
+        animation: animation,
+        color: indicatorColor,
+        shape: indicatorShape,
+        padding: padding,
+        buildIcon: (BuildContext context) {
+          final IconThemeData selectedIconTheme =
+              navigationBarTheme.iconTheme?.resolve(selectedState) ??
+                  defaults.iconTheme!.resolve(selectedState)!;
+          final IconThemeData unselectedIconTheme =
+              navigationBarTheme.iconTheme?.resolve(unselectedState) ??
+                  defaults.iconTheme!.resolve(unselectedState)!;
+          final IconThemeData disabledIconTheme =
+              navigationBarTheme.iconTheme?.resolve(disabledState) ??
+                  defaults.iconTheme!.resolve(disabledState)!;
 
-        final TextStyle? textStyle = (enabled
-            ? animation.isForwardOrCompleted
-                ? effectiveSelectedLabelTextStyle
-                : effectiveUnselectedLabelTextStyle
-            : effectiveDisabledLabelTextStyle);
+          final Widget selectedIconWidget = IconTheme.merge(
+            data: enabled ? selectedIconTheme : disabledIconTheme,
+            child: selectedIcon ?? icon,
+          );
+          final Widget unselectedIconWidget = IconTheme.merge(
+            data: enabled ? unselectedIconTheme : disabledIconTheme,
+            child: icon,
+          );
 
-        return Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: MediaQuery.withClampedTextScaling(
-            // Set maximum text scale factor to _kMaxLabelTextScaleFactor for the
-            // label to keep the visual hierarchy the same even with larger font
-            // sizes. To opt out, wrap the [label] widget in a [MediaQuery] widget
-            // with a different `TextScaler`.
-            maxScaleFactor: _kMaxLabelTextScaleFactor,
-            child: Text(label, style: textStyle),
-          ),
-        );
-      },
+          return animation.isForwardOrCompleted
+              ? selectedIconWidget
+              : unselectedIconWidget;
+        },
+        buildLabel: (BuildContext context) {
+          final TextStyle? effectiveSelectedLabelTextStyle =
+              navigationBarTheme.labelTextStyle?.resolve(selectedState) ??
+                  defaults.labelTextStyle!.resolve(selectedState);
+          final TextStyle? effectiveUnselectedLabelTextStyle =
+              navigationBarTheme.labelTextStyle?.resolve(unselectedState) ??
+                  defaults.labelTextStyle!.resolve(unselectedState);
+          final TextStyle? effectiveDisabledLabelTextStyle =
+              navigationBarTheme.labelTextStyle?.resolve(disabledState) ??
+                  defaults.labelTextStyle!.resolve(disabledState);
+
+          final TextStyle? textStyle = (enabled
+              ? animation.isForwardOrCompleted
+                  ? effectiveSelectedLabelTextStyle
+                  : effectiveUnselectedLabelTextStyle
+              : effectiveDisabledLabelTextStyle);
+
+          return Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: MediaQuery.withClampedTextScaling(
+              // Set maximum text scale factor to _kMaxLabelTextScaleFactor for the
+              // label to keep the visual hierarchy the same even with larger font
+              // sizes. To opt out, wrap the [label] widget in a [MediaQuery] widget
+              // with a different `TextScaler`.
+              maxScaleFactor: _kMaxLabelTextScaleFactor,
+              child: Text(label, style: textStyle),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -402,6 +419,7 @@ class _NavigationDestinationBuilder extends StatefulWidget {
     this.shape,
     this.tooltip,
     this.enabled = true,
+    this.padding = EdgeInsets.zero,
   });
 
   /// Builds the icon for a destination in a [NavigationBar].
@@ -448,6 +466,7 @@ class _NavigationDestinationBuilder extends StatefulWidget {
   final Animation<double> animation;
   final Color? color;
   final ShapeBorder? shape;
+  final EdgeInsetsGeometry padding;
 
   @override
   State<_NavigationDestinationBuilder> createState() =>
@@ -491,10 +510,13 @@ class _NavigationDestinationBuilderState
                 builder: (context, child) => Row(
                   children: <Widget>[
                     Expanded(
-                      child: _NavigationBarDestinationLayout(
-                        icon: widget.buildIcon(context),
-                        iconKey: iconKey,
-                        label: widget.buildLabel(context),
+                      child: Padding(
+                        padding: widget.padding,
+                        child: _NavigationBarDestinationLayout(
+                          icon: widget.buildIcon(context),
+                          iconKey: iconKey,
+                          label: widget.buildLabel(context),
+                        ),
                       ),
                     ),
                   ],
@@ -1340,7 +1362,7 @@ class _NavigationBarDefaultsM2 extends NavigationBarThemeData {
 // Design token database by the script:
 //   dev/tools/gen_defaults/bin/gen_defaults.dart.
 
-class _NavigationBarDefaultsM3 extends NavigationBarThemeData {
+class _NavigationBarDefaultsM3 extends CustomNavigationBarThemeData {
   _NavigationBarDefaultsM3(this.context)
       : super(
           height: 80.0,

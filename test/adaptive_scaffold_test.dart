@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import "package:custom_adaptive_scaffold/custom_adaptive_scaffold.dart";
-import "package:custom_adaptive_scaffold/src/custom_navigation_rail.dart";
 import "package:flutter/material.dart";
 import "package:flutter_test/flutter_test.dart";
 

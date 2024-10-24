@@ -223,20 +223,21 @@ class _MyHomePageState extends State<MyHomePage>
 
     // These are the destinations used within the AdaptiveScaffold navigation
     // builders.
-    const List<NavigationDestination> destinations = <NavigationDestination>[
-      NavigationDestination(
+    const List<CustomNavigationDestination> destinations =
+        <CustomNavigationDestination>[
+      CustomNavigationDestination(
         label: "Inbox",
         icon: Icon(Icons.inbox),
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         label: "Articles",
         icon: Icon(Icons.article_outlined),
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         label: "Chat",
         icon: Icon(Icons.chat_bubble_outline),
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         label: "Video",
         icon: Icon(Icons.video_call_outlined),
       ),
