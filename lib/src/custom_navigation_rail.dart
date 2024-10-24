@@ -471,14 +471,11 @@ class _CustomNavigationRailState extends State<CustomNavigationRail>
               );
 
     final bool isRTLDirection = Directionality.of(context) == TextDirection.rtl;
-
-    late final EdgeInsetsGeometry railDestinationMargin;
-    late final EdgeInsetsGeometry? railDestinationPadding;
-
-    if (navigationRailTheme is CustomNavigationRailThemeData) {
-      railDestinationMargin = navigationRailTheme.margin;
-      railDestinationPadding = navigationRailTheme.padding;
-    }
+    final bool isCustom = navigationRailTheme is CustomNavigationRailThemeData;
+    final EdgeInsetsGeometry? railDestinationMargin =
+        isCustom ? navigationRailTheme.margin : null;
+    final EdgeInsetsGeometry? railDestinationPadding =
+        isCustom ? navigationRailTheme.padding : null;
 
     return _ExtendedNavigationRailAnimation(
       animation: _extendedAnimation,
