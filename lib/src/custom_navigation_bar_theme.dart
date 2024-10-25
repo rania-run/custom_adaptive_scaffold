@@ -53,6 +53,7 @@ class CustomNavigationBarThemeData
     this.overlayColor,
     this.margin = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
+    this.tooltipVerticalOffset = 42,
   });
 
   /// Overrides the default value of [NavigationBar.height].
@@ -112,6 +113,9 @@ class CustomNavigationBarThemeData
   /// Applies padding around navigation item content. Defaults to [EdgeInsets.zero].
   final EdgeInsetsGeometry padding;
 
+  /// Defines the vertical offset of tooltip popovers. Defaults to 42.
+  final double tooltipVerticalOffset;
+
   /// Creates a copy of this object with the given fields replaced with the
   /// new values.
   @override
@@ -129,6 +133,7 @@ class CustomNavigationBarThemeData
     WidgetStateProperty<Color?>? overlayColor,
     EdgeInsetsGeometry? margin,
     EdgeInsetsGeometry? padding,
+    double? tooltipVerticalOffset,
   }) {
     return CustomNavigationBarThemeData(
       height: height ?? this.height,
@@ -144,6 +149,8 @@ class CustomNavigationBarThemeData
       overlayColor: overlayColor ?? this.overlayColor,
       margin: margin ?? this.margin,
       padding: padding ?? this.padding,
+      tooltipVerticalOffset:
+          tooltipVerticalOffset ?? this.tooltipVerticalOffset,
     );
   }
 
@@ -191,6 +198,9 @@ class CustomNavigationBarThemeData
           EdgeInsetsGeometry.lerp(a?.margin, b?.margin, t) ?? EdgeInsets.zero,
       padding:
           EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t) ?? EdgeInsets.zero,
+      tooltipVerticalOffset:
+          lerpDouble(a?.tooltipVerticalOffset, b?.tooltipVerticalOffset, t) ??
+              42,
     );
   }
 
@@ -209,6 +219,7 @@ class CustomNavigationBarThemeData
         overlayColor,
         margin,
         padding,
+        tooltipVerticalOffset,
       );
 
   @override
@@ -232,7 +243,8 @@ class CustomNavigationBarThemeData
         other.labelBehavior == labelBehavior &&
         other.overlayColor == overlayColor &&
         other.margin == margin &&
-        other.padding == padding;
+        other.padding == padding &&
+        other.tooltipVerticalOffset == tooltipVerticalOffset;
   }
 
   @override
@@ -302,6 +314,13 @@ class CustomNavigationBarThemeData
         "padding",
         padding,
         defaultValue: EdgeInsets.zero,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<double?>(
+        "tooltipVerticalOffset",
+        tooltipVerticalOffset,
+        defaultValue: 42,
       ),
     );
   }

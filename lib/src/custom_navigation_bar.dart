@@ -226,8 +226,12 @@ class CustomNavigationBar extends StatelessWidget {
         labelBehavior ??
             navigationBarTheme.labelBehavior ??
             defaults.labelBehavior!;
+    final ShapeBorder shape = indicatorShape ??
+        navigationBarTheme.indicatorShape ??
+        defaults.indicatorShape!;
 
     return Material(
+      shape: shape,
       color: backgroundColor ??
           navigationBarTheme.backgroundColor ??
           defaults.backgroundColor!,
@@ -475,7 +479,7 @@ class _NavigationDestinationBuilder extends StatefulWidget {
 
 class _NavigationDestinationBuilderState
     extends State<_NavigationDestinationBuilder> {
-  final GlobalKey iconKey = GlobalKey();
+  final GlobalKey itemKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -483,77 +487,47 @@ class _NavigationDestinationBuilderState
         _NavigationDestinationInfo.of(context);
     final NavigationBarThemeData navigationBarTheme =
         NavigationBarTheme.of(context);
-    final NavigationBarThemeData defaults = _defaultsFor(context);
 
     return _NavigationBarDestinationSemantics(
       child: _NavigationBarDestinationTooltip(
         message: widget.tooltip ?? widget.label,
-        child: _IndicatorInkWell(
-          iconKey: iconKey,
-          labelBehavior: info.labelBehavior,
-          customBorder: info.indicatorShape ??
-              navigationBarTheme.indicatorShape ??
-              defaults.indicatorShape,
-          overlayColor: info.overlayColor ?? navigationBarTheme.overlayColor,
-          onTap: widget.enabled ? info.onTap : null,
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              NavigationIndicator(
-                animation: widget.animation,
-                color: widget.color,
-                shape: widget.shape,
-                height: double.infinity,
-              ),
-              _StatusTransitionWidgetBuilder(
-                animation: widget.animation,
-                builder: (context, child) => Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: widget.padding,
+        child: ClipRect(
+          child: InkWell(
+            customBorder: widget.shape,
+            overlayColor: info.overlayColor ?? navigationBarTheme.overlayColor,
+            onTap: widget.enabled ? info.onTap : null,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                // This is the background color of the currently selected
+                // navigation bar item
+                NavigationIndicator(
+                  animation: widget.animation,
+                  color: widget.color,
+                  shape: widget.shape,
+                  height: double.infinity,
+                ),
+                _StatusTransitionWidgetBuilder(
+                  animation: widget.animation,
+                  builder: (context, child) => Row(
+                    children: <Widget>[
+                      Expanded(
                         child: _NavigationBarDestinationLayout(
                           icon: widget.buildIcon(context),
-                          iconKey: iconKey,
+                          itemKey: itemKey,
+                          padding: widget.padding,
                           label: widget.buildLabel(context),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-}
-
-class _IndicatorInkWell extends InkResponse {
-  const _IndicatorInkWell({
-    required this.iconKey,
-    required this.labelBehavior,
-    super.overlayColor,
-    super.customBorder,
-    super.onTap,
-    super.child,
-  }) : super(
-          containedInkWell: true,
-          highlightColor: Colors.transparent,
-        );
-
-  final GlobalKey iconKey;
-  final NavigationDestinationLabelBehavior labelBehavior;
-
-  @override
-  RectCallback? getRectCallback(RenderBox referenceBox) {
-    return () {
-      final RenderBox iconBox =
-          iconKey.currentContext!.findRenderObject()! as RenderBox;
-      final Rect iconRect = iconBox.localToGlobal(Offset.zero) & iconBox.size;
-      return referenceBox.globalToLocal(iconRect.topLeft) & iconBox.size;
-    };
   }
 }
 
@@ -778,6 +752,7 @@ class NavigationIndicator extends StatelessWidget {
                 child: Container(
                   width: width,
                   height: height,
+                  // This is the selected item background
                   decoration: ShapeDecoration(
                     shape: shape ??
                         RoundedRectangleBorder(borderRadius: borderRadius),
@@ -804,8 +779,9 @@ class _NavigationBarDestinationLayout extends StatelessWidget {
   /// 3 [NavigationBar].
   const _NavigationBarDestinationLayout({
     required this.icon,
-    required this.iconKey,
+    required this.itemKey,
     required this.label,
+    this.padding = EdgeInsets.zero,
   });
 
   /// The icon widget that sits on top of the label.
@@ -816,7 +792,7 @@ class _NavigationBarDestinationLayout extends StatelessWidget {
   /// The global key for the icon of this destination.
   ///
   /// This is used to determine the position of the icon.
-  final GlobalKey iconKey;
+  final GlobalKey itemKey;
 
   /// The label widget that sits below the icon.
   ///
@@ -826,36 +802,39 @@ class _NavigationBarDestinationLayout extends StatelessWidget {
   /// See [CustomNavigationDestination.label].
   final Widget label;
 
+  final EdgeInsetsGeometry padding;
+
   static final Key _labelKey = UniqueKey();
 
   @override
   Widget build(BuildContext context) {
     return _DestinationLayoutAnimationBuilder(
       builder: (BuildContext context, Animation<double> animation) {
-        return CustomMultiChildLayout(
-          delegate: _NavigationDestinationLayoutDelegate(
-            animation: animation,
-          ),
-          children: <Widget>[
-            LayoutId(
-              id: _NavigationDestinationLayoutDelegate.iconId,
-              child: RepaintBoundary(
-                key: iconKey,
-                child: icon,
+        return RepaintBoundary(
+          key: itemKey,
+          child: Padding(
+            padding: padding,
+            child: CustomMultiChildLayout(
+              delegate: _NavigationDestinationLayoutDelegate(
+                animation: animation,
               ),
-            ),
-            LayoutId(
-              id: _NavigationDestinationLayoutDelegate.labelId,
-              child: FadeTransition(
-                alwaysIncludeSemantics: true,
-                opacity: animation,
-                child: RepaintBoundary(
-                  key: _labelKey,
-                  child: label,
+              children: <Widget>[
+                LayoutId(
+                  id: _NavigationDestinationLayoutDelegate.iconId,
+                  child: icon,
                 ),
-              ),
+                LayoutId(
+                  id: _NavigationDestinationLayoutDelegate.labelId,
+                  child: FadeTransition(
+                    key: _labelKey,
+                    alwaysIncludeSemantics: true,
+                    opacity: animation,
+                    child: label,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -973,10 +952,18 @@ class _NavigationBarDestinationTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final NavigationBarThemeData navigationBarTheme = theme.navigationBarTheme;
+
+    double tooltipVerticalOffset = 42;
+
+    if (navigationBarTheme is CustomNavigationBarThemeData) {
+      tooltipVerticalOffset = navigationBarTheme.tooltipVerticalOffset;
+    }
+
     return Tooltip(
       message: message,
-      // TODO(johnsonmh): Make this value configurable/themable.
-      verticalOffset: 42,
+      verticalOffset: tooltipVerticalOffset,
       excludeFromSemantics: true,
       preferBelow: false,
       child: child,

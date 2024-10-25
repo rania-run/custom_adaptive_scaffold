@@ -1,6 +1,5 @@
 part of "custom_navigation_rail.dart";
 
-const double _kCircularIndicatorDiameter = 56;
 const double _kIndicatorHeight = 32;
 
 class RailDestination extends StatefulWidget {
