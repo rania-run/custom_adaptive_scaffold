@@ -195,6 +195,7 @@ class SlotLayoutConfig extends StatelessWidget {
 
   /// An empty [SlotLayoutConfig] to be placed in a slot to indicate that the slot
   /// should show nothing.
+  // ignore: prefer_constructors_over_static_methods
   static SlotLayoutConfig empty() {
     return const SlotLayoutConfig._(key: Key(""), builder: null);
   }
