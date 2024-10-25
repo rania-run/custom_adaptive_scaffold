@@ -5,6 +5,13 @@ renders your Flutter application according to the
 [Material 3](https://m3.material.io/foundations/adaptive-design/overview)
 guidelines.
 
+**Important**: This source code is derived from the original code found in
+`package:flutter_adaptive_scaffold` as well as the Flutter framework, itself.
+Modifications have been made to the original source code that provide some
+additional customizations, such as padding and margins. Furthermore, the
+indicator around navigation items has been expanded from covering only the icon
+to covering the entire menu item.
+
 To see examples of using these widgets to make a simple but common adaptive
 layout:
 
@@ -20,7 +27,7 @@ Design 3 that adapts to a variety of screens. It provides a preset of layout,
 including positions and animations, by handling macro changes in navigational
 elements and bodies based on the current features of the screen, namely screen
 width and platform. For example, the navigational elements would be a
-`BottomNavigationBar` on a small mobile device and a `NavigationRail` on larger
+`BottomNavigationBar` on a small mobile device and a `CustomNavigationRail` on larger
 devices. The body is the primary screen that takes up the space left by the
 navigational elements. The secondaryBody acts as an option to split the space
 between two panes for purposes such as having a detail view. There is some
@@ -64,28 +71,28 @@ Widget build(BuildContext context) {
         _selectedTab = index;
       });
     },
-    destinations: const <NavigationDestination>[
-      NavigationDestination(
+    destinations: const <CustomNavigationDestination>[
+      CustomNavigationDestination(
         icon: Icon(Icons.inbox_outlined),
         selectedIcon: Icon(Icons.inbox),
         label: 'Inbox',
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         icon: Icon(Icons.article_outlined),
         selectedIcon: Icon(Icons.article),
         label: 'Articles',
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         icon: Icon(Icons.chat_outlined),
         selectedIcon: Icon(Icons.chat),
         label: 'Chat',
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         icon: Icon(Icons.video_call_outlined),
         selectedIcon: Icon(Icons.video_call),
         label: 'Video',
       ),
-      NavigationDestination(
+      CustomNavigationDestination(
         icon: Icon(Icons.home_outlined),
         selectedIcon: Icon(Icons.home),
         label: 'Inbox',

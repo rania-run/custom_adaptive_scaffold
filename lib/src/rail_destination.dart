@@ -273,14 +273,7 @@ class _RailDestinationState extends State<RailDestination>
               if (spacing != null) spacing,
               Center(
                 // _AddIndicator is only shown on selected menu items.
-                child: _AddIndicator(
-                  addIndicator: useIndicator,
-                  indicatorColor: indicatorColor,
-                  indicatorShape: indicatorShape,
-                  isCircular: !material3,
-                  indicatorAnimation: _destinationAnimation,
-                  child: themedIcon,
-                ),
+                child: themedIcon,
               ),
               if (spacing != null) spacing,
             ],
@@ -397,29 +390,21 @@ class _RailDestinationState extends State<RailDestination>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 topSpacing,
-                // _AddIndicator is only shown on selected menu items.
-                _AddIndicator(
-                  addIndicator: useIndicator,
-                  indicatorColor: widget.indicatorColor,
-                  indicatorShape: widget.indicatorShape,
-                  isCircular: false,
-                  indicatorAnimation: _destinationAnimation,
-                  child: Row(
-                    children: [
-                      themedIcon,
-                      labelSpacing,
-                      Align(
-                        alignment: Alignment.topCenter,
-                        heightFactor: appearingAnimationValue,
-                        widthFactor: 1.0,
-                        child: FadeTransition(
-                          alwaysIncludeSemantics: true,
-                          opacity: labelFadeAnimation,
-                          child: styledLabel,
-                        ),
+                Row(
+                  children: [
+                    themedIcon,
+                    labelSpacing,
+                    Align(
+                      alignment: Alignment.topCenter,
+                      heightFactor: appearingAnimationValue,
+                      widthFactor: 1.0,
+                      child: FadeTransition(
+                        alwaysIncludeSemantics: true,
+                        opacity: labelFadeAnimation,
+                        child: styledLabel,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 bottomSpacing,
               ],
@@ -461,22 +446,15 @@ class _RailDestinationState extends State<RailDestination>
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               topSpacing,
-              _AddIndicator(
-                addIndicator: useIndicator,
-                indicatorColor: indicatorColor,
-                indicatorShape: indicatorShape,
-                isCircular: false,
-                indicatorAnimation: _destinationAnimation,
-                child: Wrap(
-                  alignment: WrapAlignment.center,
-                  runAlignment: WrapAlignment.center,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    themedIcon,
-                    labelSpacing,
-                    styledLabel,
-                  ],
-                ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                runAlignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  themedIcon,
+                  labelSpacing,
+                  styledLabel,
+                ],
               ),
               bottomSpacing,
             ],
@@ -578,63 +556,6 @@ class _IndicatorInkWell extends InkResponse {
       };
     }
     return null;
-  }
-}
-
-/// When [addIndicator] is `true`, puts [child] center aligned in a [Stack] with
-/// a [NavigationIndicator] behind it, otherwise returns [child].
-///
-/// When [isCircular] is true, the indicator will be a circle, otherwise the
-/// indicator will be a stadium shape.
-class _AddIndicator extends StatelessWidget {
-  const _AddIndicator({
-    required this.addIndicator,
-    required this.isCircular,
-    required this.indicatorColor,
-    required this.indicatorShape,
-    required this.indicatorAnimation,
-    required this.child,
-  });
-
-  final bool addIndicator;
-  final bool isCircular;
-  final Color? indicatorColor;
-  final ShapeBorder? indicatorShape;
-  final Animation<double> indicatorAnimation;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!addIndicator) {
-      return child;
-    }
-    late final Widget indicator;
-
-    if (isCircular) {
-      indicator = NavigationIndicator(
-        animation: indicatorAnimation,
-        height: _kCircularIndicatorDiameter,
-        width: _kCircularIndicatorDiameter,
-        borderRadius: BorderRadius.circular(_kCircularIndicatorDiameter / 2),
-        color: indicatorColor,
-      );
-    } else {
-      indicator = NavigationIndicator(
-        animation: indicatorAnimation,
-        width: _kCircularIndicatorDiameter,
-        shape: indicatorShape,
-        // This is the color of the indicator around a selected navigation item.
-        color: indicatorColor,
-      );
-    }
-
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        indicator,
-        child,
-      ],
-    );
   }
 }
 
