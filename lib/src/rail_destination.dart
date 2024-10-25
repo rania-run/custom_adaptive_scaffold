@@ -186,11 +186,8 @@ class _RailDestinationState extends State<RailDestination>
 
     final double paddingAndMarginWidth =
         destinationPadding.horizontal + destinationMargin.horizontal;
-
-    final double minWidth = (widget.minWidth ??
-            navigationRailTheme.minWidth ??
-            defaults.minWidth!) -
-        (collapsed ? paddingAndMarginWidth : 0);
+    final double minWidth =
+        widget.minWidth ?? navigationRailTheme.minWidth ?? defaults.minWidth!;
 
     final double minExtendedWidth = (widget.minExtendedWidth ??
             navigationRailTheme.minExtendedWidth ??
