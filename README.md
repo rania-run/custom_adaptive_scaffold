@@ -1,3 +1,5 @@
+[![style: arcane analysis](https://img.shields.io/badge/style-arcane_analysis-6E35AE)](https://pub.dev/packages/arcane_analysis)
+
 # (Custom) Adaptive Scaffold
 
 `AdaptiveScaffold` reacts to input from users, devices and screen elements and
