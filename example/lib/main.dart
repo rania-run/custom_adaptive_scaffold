@@ -455,7 +455,7 @@ class _SmallComposeIcon extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(15)),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withValues(alpha: 0.5),
             spreadRadius: 1,
             blurRadius: 2,
             offset: const Offset(0, 2),
@@ -518,7 +518,7 @@ class _LargeComposeIcon extends StatelessWidget {
                   ? null
                   : <BoxShadow>[
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: Colors.grey.withValues(alpha: 0.5),
                         spreadRadius: 1,
                         blurRadius: 2,
                         offset: const Offset(0, 2),
@@ -650,7 +650,7 @@ class _ItemListTile extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
             color: selected == _allItems.indexOf(item)
                 ? const Color.fromARGB(255, 234, 222, 255)
@@ -737,7 +737,7 @@ class _DetailTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height,
-        child: Container(
+        child: DecoratedBox(
           decoration: const BoxDecoration(
             color: Color.fromARGB(255, 245, 241, 248),
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -854,7 +854,7 @@ class _EmailTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-      child: Container(
+      child: DecoratedBox(
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10)),
