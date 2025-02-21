@@ -54,6 +54,7 @@ class CustomNavigationBarThemeData
     this.margin = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
     this.tooltipVerticalOffset = 42,
+    this.labelPadding,
   });
 
   /// Overrides the default value of [NavigationBar.height].
@@ -116,6 +117,10 @@ class CustomNavigationBarThemeData
   /// Defines the vertical offset of tooltip popovers. Defaults to 42.
   final double tooltipVerticalOffset;
 
+  /// Applies padding around navigation item labels. Defaults to [EdgeInsets.zero].
+  @override
+  final EdgeInsetsGeometry? labelPadding;
+
   /// Creates a copy of this object with the given fields replaced with the
   /// new values.
   @override
@@ -134,6 +139,7 @@ class CustomNavigationBarThemeData
     EdgeInsetsGeometry? margin,
     EdgeInsetsGeometry? padding,
     double? tooltipVerticalOffset,
+    EdgeInsetsGeometry? labelPadding,
   }) {
     return CustomNavigationBarThemeData(
       height: height ?? this.height,
