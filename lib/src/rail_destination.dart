@@ -226,7 +226,7 @@ class _RailDestinationState extends State<RailDestination>
     final Widget themedIcon = IconTheme(
       data: widget.disabled
           ? iconTheme.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.38),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.38),
             )
           : iconTheme,
       child: widget.icon,
@@ -234,7 +234,7 @@ class _RailDestinationState extends State<RailDestination>
     final Widget styledLabel = DefaultTextStyle(
       style: widget.disabled
           ? labelTextStyle.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.38),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.38),
             )
           : labelTextStyle,
       child: widget.label,
@@ -464,12 +464,14 @@ class _RailDestinationState extends State<RailDestination>
     final ColorScheme colors = Theme.of(context).colorScheme;
     final Color splashColor =
         theme.navigationRailTheme.indicatorColor ?? colors.primary;
-    final bool primaryColorAlphaModified = splashColor.alpha < 255.0;
+    final bool primaryColorAlphaModified = splashColor.a < 255.0;
 
-    final Color effectiveSplashColor =
-        primaryColorAlphaModified ? splashColor : splashColor.withOpacity(0.12);
-    final Color effectiveHoverColor =
-        primaryColorAlphaModified ? splashColor : splashColor.withOpacity(0.04);
+    final Color effectiveSplashColor = primaryColorAlphaModified
+        ? splashColor
+        : splashColor.withValues(alpha: 0.12);
+    final Color effectiveHoverColor = primaryColorAlphaModified
+        ? splashColor
+        : splashColor.withValues(alpha: 0.04);
 
     return Semantics(
       container: true,
@@ -604,7 +606,7 @@ class _NavigationRailDefaultsM2 extends NavigationRailThemeData {
   @override
   TextStyle? get unselectedLabelTextStyle {
     return _theme.textTheme.bodyLarge!
-        .copyWith(color: _colors.onSurface.withOpacity(0.64));
+        .copyWith(color: _colors.onSurface.withValues(alpha: 0.64));
   }
 
   @override

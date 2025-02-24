@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Updated to support Flutter 3.19.0
+
 ## 1.0.0
 
 * Forked from flutter_adaptive_scaffold
