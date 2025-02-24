@@ -6,6 +6,7 @@ class RailDestination extends StatefulWidget {
   const RailDestination({
     required this.icon,
     required this.label,
+    this.hoverColor,
     this.minWidth,
     this.minExtendedWidth,
     this.destinationAnimation,
@@ -45,6 +46,7 @@ class RailDestination extends StatefulWidget {
   final bool extended;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
+  final Color? hoverColor;
 
   @override
   State<RailDestination> createState() => _RailDestinationState();
@@ -120,10 +122,13 @@ class _RailDestinationState extends State<RailDestination>
 
   bool mediumLargeIsActive(BuildContext context) =>
       const Breakpoint.mediumLarge().isActive(context);
+
   bool largeIsActive(BuildContext context) =>
       const Breakpoint.large().isActive(context);
+
   bool extraLargeIsActive(BuildContext context) =>
       const Breakpoint.extraLarge().isActive(context);
+
   bool mediumIsActive(BuildContext context) =>
       const Breakpoint.medium().isActive(context);
 
@@ -469,9 +474,11 @@ class _RailDestinationState extends State<RailDestination>
     final Color effectiveSplashColor = primaryColorAlphaModified
         ? splashColor
         : splashColor.withValues(alpha: 0.12);
-    final Color effectiveHoverColor = primaryColorAlphaModified
-        ? splashColor
-        : splashColor.withValues(alpha: 0.04);
+
+    final Color hoverColor =
+        widget.selected == true ? Colors.transparent : Colors.black12;
+
+    final Color effectiveHoverColor = widget.hoverColor ?? hoverColor;
 
     return Semantics(
       container: true,
