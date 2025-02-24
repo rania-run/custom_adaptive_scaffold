@@ -495,7 +495,7 @@ class _NavigationDestinationBuilderState
         child: ClipRect(
           child: InkWell(
             customBorder: widget.shape,
-            overlayColor: navigationBarTheme.overlayColor,
+            overlayColor: info.overlayColor ?? navigationBarTheme.overlayColor,
             onTap: widget.enabled ? info.onTap : null,
             child: Stack(
               alignment: Alignment.center,
