@@ -303,6 +303,7 @@ class CustomNavigationDestination extends NavigationDestination {
         _NavigationDestinationInfo.of(context);
     const Set<WidgetState> selectedState = <WidgetState>{
       WidgetState.selected,
+      WidgetState.hovered,
     };
     const Set<WidgetState> unselectedState = <WidgetState>{};
     const Set<WidgetState> disabledState = <WidgetState>{
@@ -494,7 +495,7 @@ class _NavigationDestinationBuilderState
         child: ClipRect(
           child: InkWell(
             customBorder: widget.shape,
-            overlayColor: info.overlayColor ?? navigationBarTheme.overlayColor,
+            overlayColor: navigationBarTheme.overlayColor,
             onTap: widget.enabled ? info.onTap : null,
             child: Stack(
               alignment: Alignment.center,
@@ -1333,7 +1334,7 @@ class _NavigationBarDefaultsM2 extends NavigationBarThemeData {
   }
 
   @override
-  Color? get indicatorColor => _colors.secondary.withOpacity(0.24);
+  Color? get indicatorColor => _colors.secondary.withValues(alpha: 0.24);
 
   @override
   WidgetStateProperty<TextStyle?>? get labelTextStyle =>
@@ -1376,8 +1377,8 @@ class _NavigationBarDefaultsM3 extends CustomNavigationBarThemeData {
       return IconThemeData(
         size: 24.0,
         color: states.contains(WidgetState.disabled)
-            ? _colors.onSurfaceVariant.withOpacity(0.38)
-            : states.contains(WidgetState.selected)
+            ? _colors.onSurfaceVariant.withValues(alpha: 0.38)
+            : states.contains(WidgetState.selected | WidgetState.hovered)
                 ? _colors.onSecondaryContainer
                 : _colors.onSurfaceVariant,
       );
@@ -1386,6 +1387,7 @@ class _NavigationBarDefaultsM3 extends CustomNavigationBarThemeData {
 
   @override
   Color? get indicatorColor => _colors.secondaryContainer;
+
   @override
   ShapeBorder? get indicatorShape => const StadiumBorder();
 
@@ -1395,8 +1397,8 @@ class _NavigationBarDefaultsM3 extends CustomNavigationBarThemeData {
       final TextStyle style = _textTheme.labelMedium!;
       return style.apply(
         color: states.contains(WidgetState.disabled)
-            ? _colors.onSurfaceVariant.withOpacity(0.38)
-            : states.contains(WidgetState.selected)
+            ? _colors.onSurfaceVariant.withValues(alpha: 0.38)
+            : states.contains(WidgetState.selected | WidgetState.hovered)
                 ? _colors.onSurface
                 : _colors.onSurfaceVariant,
       );
