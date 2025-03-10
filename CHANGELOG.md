@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Backported memory leak fix (See: <https://github.com/flutter/packages/pull/8546>)
+
 ## 2.0.0
 
 * Updated to support Flutter 3.19.0
